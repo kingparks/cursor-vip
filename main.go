@@ -19,6 +19,7 @@ func startServer(productIndexSelected string) {
 	go func() {
 		<-sigs
 		tui.UnSetProxy()
+		auth.UnSetClient(productIndexSelected)
 		os.Exit(0)
 	}()
 	tui.SetProxy("localhost", auth.Port)
