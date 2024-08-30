@@ -2,7 +2,7 @@ set -e
 URLS=("https://mirror.ghproxy.com/https://github.com/kingparks/cursor-vip/releases/download/latest/")
 url=${URLS[0]}
 lc_type=$(echo $LC_CTYPE | cut -c 1-2)
-if [ -z $lc_type ]; then
+if [ -z $lc_type ] || [ "$lc_type" = "UT" ]; then
   lc_type=$(echo $LANG | cut -c 1-2)
 fi
 

@@ -19,7 +19,6 @@ require (
 	github.com/unknwon/i18n v0.0.0-20210904045753-ff3a8617e361
 	golang.org/x/sys v0.22.0
 	gorm.io/driver/mysql v1.5.7
-	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gorm v1.25.11
 	howett.net/plist v1.0.1
 )
@@ -52,7 +51,6 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect

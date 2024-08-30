@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/atotto/clipboard"
 	"howett.net/plist"
-	"log"
 	"net"
 	"os"
 	"os/exec"
@@ -20,7 +19,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 100
+var version = 102
 
 var hosts = []string{"http://129.154.205.7:7193"}
 var host = hosts[0]
@@ -48,7 +47,7 @@ var Trr *Tr
 
 var jbProduct = []string{"cursor IDE"}
 
-func Run() (productIndexSelected string) {
+func Run() (productIndexSelected string, modelIndexSelected int) {
 	language := flag.String("l", lang, "set language, eg: zh, en, nl, ru, hu, Trr")
 	flag.Parse()
 
@@ -95,6 +94,25 @@ func Run() (productIndexSelected string) {
 	printAD()
 	checkUpdate(version)
 	fmt.Println()
+
+	if runtime.GOOS != "linux" {
+		fmt.Printf(defaultColor, Trr.Tr("选择启动模式："))
+		for i, v := range []string{Trr.Tr("强劲代理模式"), Trr.Tr("极简模式")} {
+			fmt.Printf(hGreen, fmt.Sprintf("%d. %s\t", i+1, v))
+		}
+		fmt.Println()
+		fmt.Print(Trr.Tr("请输入模式编号（直接回车默认为1）："))
+		modelIndexSelected = 1
+		_, _ = fmt.Scanln(&modelIndexSelected)
+		if modelIndexSelected < 1 || modelIndexSelected > 2 {
+			fmt.Println(Trr.Tr("输入有误"))
+			return
+		}
+		fmt.Println()
+	} else {
+		modelIndexSelected = 2
+	}
+
 	if len(jbProduct) > 1 {
 		fmt.Printf(defaultColor, Trr.Tr("选择要授权的产品："))
 		for i, v := range jbProduct {
@@ -185,24 +203,25 @@ func printAD() {
 
 func checkUpdate(version int) {
 	upUrl := Cli.CheckVersion(fmt.Sprint(version))
-	if upUrl != "" {
-		fmt.Printf(red, Trr.Tr("有新版本可用，尝试自动更新中，若失败，请输入下面命令并回车手动更新程序："))
-		fmt.Println()
-		fmt.Println(`bash -c "$(curl -fsSL ` + githubPath + `install.sh)"`)
-		var cmd *exec.Cmd
-		if strings.Contains(strings.ToLower(os.Getenv("ComSpec")), "cmd.exe") {
-			cmd = exec.Command("C:\\Program Files\\Git\\git-bash.exe", "-c", fmt.Sprintf(`bash -c "$(curl -fsSL %sinstall.sh)"`, githubPath))
-		} else {
-			cmd = exec.Command("bash", "-c", fmt.Sprintf(`bash -c "$(curl -fsSL %sinstall.sh)"`, githubPath))
-		}
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(Trr.Tr("更新完成，重新运行程序即可"))
-		os.Exit(0)
+	if upUrl == "" {
 		return
 	}
+	isCopyText := ""
+	installCmd := `bash -c "$(curl -fsSL ` + githubPath + `install.sh)"`
+	errClip := clipboard.WriteAll(installCmd)
+	if errClip == nil {
+		isCopyText = Trr.Tr("（已复制到剪贴板）")
+	}
+	switch runtime.GOOS {
+	case "windows":
+		fmt.Printf(red, Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到GitBash窗口执行")+isCopyText+`：`)
+	default:
+		fmt.Printf(red, Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到新终端窗口执行")+isCopyText+`：`)
+	}
+	fmt.Printf(hGreen, installCmd)
+	_, _ = fmt.Scanln()
+	os.Exit(0)
+	return
 }
 
 // 获取推广人

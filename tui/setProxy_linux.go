@@ -3,10 +3,12 @@
 
 package tui
 
+import "fmt"
+
 func SetProxy(server string, port string) {
-	// TODO Set HTTP proxy
+	fmt.Println("Set HTTP and HTTPS proxy manually: ", server+":"+port)
 }
 
 func UnSetProxy() {
-	// TODO Unset HTTP proxy
+	fmt.Println("UnSet HTTP and HTTPS proxy manually: ")
 }
