@@ -23,4 +23,5 @@ Strong proxy mode For the first time after starting, you need to install the tru
 Enjoy cursor-vip:
 * Open the CURSOR code editor, click the settings icon in the upper right corner, exit and log in to enjoy
 
-
+### Star History
+![Star History Chart](https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date)

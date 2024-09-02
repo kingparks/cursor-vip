@@ -18,13 +18,13 @@ func startServer(productIndexSelected string, modelIndexSelected int) {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-sigs
-		tui.UnSetProxy()
-		if modelIndexSelected == 1 {
-			auth.UnSetClient(productIndexSelected)
+		auth.UnSetClient(productIndexSelected)
+		if modelIndexSelected == 2 {
+			tui.UnSetProxy()
 		}
 		os.Exit(0)
 	}()
-	if modelIndexSelected == 1 {
+	if modelIndexSelected == 2 {
 		tui.SetProxy("localhost", auth.Port)
 	}
 	auth.Run(productIndexSelected)

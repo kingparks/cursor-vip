@@ -19,7 +19,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 102
+var version = 103
 
 var hosts = []string{"http://129.154.205.7:7193"}
 var host = hosts[0]
@@ -97,7 +97,7 @@ func Run() (productIndexSelected string, modelIndexSelected int) {
 
 	if runtime.GOOS != "linux" {
 		fmt.Printf(defaultColor, Trr.Tr("选择启动模式："))
-		for i, v := range []string{Trr.Tr("强劲代理模式"), Trr.Tr("极简模式")} {
+		for i, v := range []string{Trr.Tr("极简模式"), Trr.Tr("强劲代理模式")} {
 			fmt.Printf(hGreen, fmt.Sprintf("%d. %s\t", i+1, v))
 		}
 		fmt.Println()
@@ -110,7 +110,7 @@ func Run() (productIndexSelected string, modelIndexSelected int) {
 		}
 		fmt.Println()
 	} else {
-		modelIndexSelected = 2
+		modelIndexSelected = 1
 	}
 
 	if len(jbProduct) > 1 {
