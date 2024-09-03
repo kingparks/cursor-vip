@@ -19,7 +19,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 103
+var version = 104
 
 var hosts = []string{"http://129.154.205.7:7193"}
 var host = hosts[0]
