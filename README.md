@@ -21,7 +21,7 @@ Strong proxy mode For the first time after starting, you need to install the tru
 * Linux: //TODO
 
 Enjoy cursor-vip:
-* Open the CURSOR code editor, click the settings icon in the upper right corner, exit and log in to enjoy
+* Open the CURSOR code editor, click the settings icon in the upper right corner, and you can see that you are already a VIP account.
 
 ### Star History
 ![Star History Chart](https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date)

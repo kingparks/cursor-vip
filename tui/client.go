@@ -126,7 +126,7 @@ func (c *Client) GetLic() (isOk bool, result string) {
 		return
 	}
 	code := gjson.Get(res, "code").Int()
-	msg := gjson.Get(res, "msg").String()
+	msg := gjson.Get(res, "lic").String()
 	result = msg
 	if code != 0 {
 		isOk = false

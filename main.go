@@ -9,16 +9,16 @@ import (
 )
 
 func main() {
-	productIndexSelected, modelIndexSelected := tui.Run()
-	startServer(productIndexSelected, modelIndexSelected)
+	productSelected, modelIndexSelected := tui.Run()
+	startServer(productSelected, modelIndexSelected)
 }
 
-func startServer(productIndexSelected string, modelIndexSelected int) {
+func startServer(productSelected string, modelIndexSelected int) {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-sigs
-		auth.UnSetClient(productIndexSelected)
+		auth.UnSetClient(productSelected)
 		if modelIndexSelected == 2 {
 			tui.UnSetProxy()
 		}
@@ -27,5 +27,5 @@ func startServer(productIndexSelected string, modelIndexSelected int) {
 	if modelIndexSelected == 2 {
 		tui.SetProxy("localhost", auth.Port)
 	}
-	auth.Run(productIndexSelected)
+	auth.Run(productSelected, modelIndexSelected)
 }

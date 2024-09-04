@@ -21,7 +21,7 @@ cursor-vip
 * Linux: //TODO
 
 享受 cursor-vip：
-* 打开 CURSOR 智能代码编辑器，点击右上角设置图标，退出然后登录即可
+* 打开 CURSOR 代码编辑器，点击右上角设置图标，可看到已是VIP账号。
 
 ### Star History
 ![Star History Chart](https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date)

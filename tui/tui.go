@@ -19,7 +19,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 104
+var version = 105
 
 var hosts = []string{"http://129.154.205.7:7193"}
 var host = hosts[0]
@@ -47,7 +47,7 @@ var Trr *Tr
 
 var jbProduct = []string{"cursor IDE"}
 
-func Run() (productIndexSelected string, modelIndexSelected int) {
+func Run() (productSelected string, modelIndexSelected int) {
 	language := flag.String("l", lang, "set language, eg: zh, en, nl, ru, hu, Trr")
 	flag.Parse()
 
@@ -128,15 +128,15 @@ func Run() (productIndexSelected string, modelIndexSelected int) {
 		}
 		for _, v := range strings.Split(fmt.Sprint(productIndex), "") {
 			vi, _ := strconv.Atoi(v)
-			productIndexSelected += jbProduct[vi-1] + ","
+			productSelected += jbProduct[vi-1] + ","
 		}
-		if len(productIndexSelected) > 1 {
-			productIndexSelected = productIndexSelected[:len(productIndexSelected)-1]
+		if len(productSelected) > 1 {
+			productSelected = productSelected[:len(productSelected)-1]
 		}
-		fmt.Println(Trr.Tr("选择的产品为：") + productIndexSelected)
+		fmt.Println(Trr.Tr("选择的产品为：") + productSelected)
 		fmt.Println()
 	} else {
-		productIndexSelected = jbProduct[0]
+		productSelected = jbProduct[0]
 	}
 	// 到期了
 	if expTime.Before(time.Now()) {
