@@ -21,7 +21,7 @@ import (
 
 var version = 105
 
-var hosts = []string{"http://129.154.205.7:7193"}
+var hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 var host = hosts[0]
 var githubPath = "https://mirror.ghproxy.com/https://github.com/kingparks/cursor-vip/releases/download/latest/"
 var err error
@@ -90,6 +90,8 @@ func Run() (productSelected string, modelIndexSelected int) {
 	fmt.Printf("\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
 		Trr.Tr("推广命令：(已推广"), sCount, Trr.Tr("人,推广已付费"), sPayCount, Trr.Tr("人；每推广10人或推广付费2人可获得一年授权)"))
 	fmt.Printf(hGreen, "bash <(curl "+githubPath+"install.sh) "+deviceID+"\n")
+	fmt.Printf(green, Trr.Tr("专属推广链接")+"："+host+"?p="+deviceID)
+	fmt.Println()
 
 	printAD()
 	checkUpdate(version)
