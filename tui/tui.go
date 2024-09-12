@@ -19,7 +19,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 105
+var version = 106
 
 var hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 var host = hosts[0]
@@ -148,7 +148,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 		if errClip == nil {
 			isCopyText = Trr.Tr("（已复制到剪贴板）")
 		}
-		fmt.Println(Trr.Tr("使用浏览器打开下面地址进行捐赠") + isCopyText)
+		fmt.Println(Trr.Tr("付费已到期,捐赠以获取一年期授权") + isCopyText)
 		fmt.Printf(dGreen, payUrl)
 		fmt.Println(Trr.Tr("捐赠完成后请回车"))
 		//检测控制台回车

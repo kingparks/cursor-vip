@@ -81,6 +81,7 @@ func (c *Client) GetPayUrl() (payUrl, orderID string) {
 	orderID = gjson.Get(res, "orderID").String()
 	return
 }
+
 func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
 	res, err := httplib.Get(c.host + "/payCheck?orderID=" + orderID + "&deviceID=" + deviceID).String()
 	if err != nil {
