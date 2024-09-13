@@ -23,7 +23,7 @@ var version = 106
 
 var hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 var host = hosts[0]
-var githubPath = "https://mirror.ghproxy.com/https://github.com/kingparks/cursor-vip/releases/download/latest/"
+var githubPath = "https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/"
 var err error
 
 var green = "\033[32m%s\033[0m\n"

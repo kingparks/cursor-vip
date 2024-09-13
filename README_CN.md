@@ -8,7 +8,7 @@
 ### 使用
 安装 cursor-vip：
 ```bash
-bash <(curl https://mirror.ghproxy.com/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
+bash <(curl https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
 ```
 
 启动 cursor-vip：

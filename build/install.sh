@@ -1,5 +1,5 @@
 set -e
-URLS=("https://mirror.ghproxy.com/https://github.com/kingparks/cursor-vip/releases/download/latest/")
+URLS=("https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/")
 url=${URLS[0]}
 lc_type=$(echo $LC_CTYPE | cut -c 1-2)
 if [ -z $lc_type ] || [ "$lc_type" = "UT" ]; then
