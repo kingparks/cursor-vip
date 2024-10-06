@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/httplib"
+	"github.com/kingparks/cursor-vip/auth/sign"
 	"github.com/tidwall/gjson"
 	"net/http"
 	"net/url"
@@ -45,7 +46,7 @@ func (c *Client) SetProxy(lang string) {
 		ConnectTimeout:   30 * time.Second,
 		Gzip:             true,
 		DumpBody:         true,
-		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID),
+		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, sign.Sign()),
 	})
 	if len(proxyText) > 0 {
 		fmt.Printf(yellow, proxyText)
