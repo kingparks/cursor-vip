@@ -46,7 +46,7 @@ func (c *Client) SetProxy(lang string) {
 		ConnectTimeout:   30 * time.Second,
 		Gzip:             true,
 		DumpBody:         true,
-		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, sign.Sign()),
+		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, sign.Sign(deviceID)),
 	})
 	if len(proxyText) > 0 {
 		fmt.Printf(yellow, proxyText)
@@ -84,7 +84,7 @@ func (c *Client) GetPayUrl() (payUrl, orderID string) {
 }
 
 func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
-	res, err := httplib.Get(c.host + "/payCheck?orderID=" + orderID + "&deviceID=" + deviceID).String()
+	res, err := httplib.Get(c.host+"/payCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -98,7 +98,7 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 		"device":  deviceID,
 		"sDevice": getPromotion(),
 	})
-	res, err := httplib.Post(host + "/my").Body(body).String()
+	res, err := httplib.Post(host+"/my").Header("sign", sign.Sign(deviceID)).Body(body).String()
 	if err != nil {
 		return
 	}
@@ -120,7 +120,7 @@ func (c *Client) CheckVersion(version string) (upUrl string) {
 }
 
 func (c *Client) GetLic() (isOk bool, result string) {
-	req := httplib.Get(host + "/getLic?device=" + getMacMD5())
+	req := httplib.Get(host+"/getLic?device="+getMacMD5()).Header("sign", sign.Sign(deviceID))
 	res, err := req.String()
 	if err != nil {
 		isOk = false
