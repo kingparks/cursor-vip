@@ -103,6 +103,9 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	deviceName := ""
 	if dUser != nil {
 		deviceName = dUser.Name
+		if deviceName == "" {
+			deviceName = dUser.Username
+		}
 	}
 	res, err := httplib.Post(host+"/my").Header("sign", sign.Sign(deviceID)).Header("deviceName", deviceName).Body(body).String()
 	if err != nil {
