@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/user"
 	"runtime"
 	"time"
 )
@@ -98,7 +99,12 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 		"device":  deviceID,
 		"sDevice": getPromotion(),
 	})
-	res, err := httplib.Post(host+"/my").Header("sign", sign.Sign(deviceID)).Body(body).String()
+	dUser, _ := user.Current()
+	deviceName := ""
+	if dUser != nil {
+		deviceName = dUser.Name
+	}
+	res, err := httplib.Post(host+"/my").Header("sign", sign.Sign(deviceID)).Header("deviceName", deviceName).Body(body).String()
 	if err != nil {
 		return
 	}
