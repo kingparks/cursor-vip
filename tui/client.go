@@ -55,6 +55,7 @@ func (c *Client) SetProxy(lang string) {
 }
 
 func (c *Client) setHost() {
+	c.host = c.Hosts[0]
 	for _, v := range c.Hosts {
 		_, err := httplib.Get(v).SetTimeout(4*time.Second, 4*time.Second).String()
 		if err == nil {
@@ -107,8 +108,9 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 			deviceName = dUser.Username
 		}
 	}
-	res, err := httplib.Post(host+"/my").Header("sign", sign.Sign(deviceID)).Header("deviceName", deviceName).Body(body).String()
+	res, err := httplib.Post(c.host+"/my").Header("sign", sign.Sign(deviceID)).Header("deviceName", deviceName).Body(body).String()
 	if err != nil {
+		panic(fmt.Sprintf("\u001B[31m%s\u001B[0m", err))
 		return
 	}
 	sCount = gjson.Get(res, "sCount").String()
@@ -120,7 +122,7 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 }
 
 func (c *Client) CheckVersion(version string) (upUrl string) {
-	res, err := httplib.Get(host + "/version?version=" + version + "&plat=" + runtime.GOOS + "_" + runtime.GOARCH).String()
+	res, err := httplib.Get(c.host + "/version?version=" + version + "&plat=" + runtime.GOOS + "_" + runtime.GOARCH).String()
 	if err != nil {
 		return ""
 	}
@@ -129,7 +131,7 @@ func (c *Client) CheckVersion(version string) (upUrl string) {
 }
 
 func (c *Client) GetLic() (isOk bool, result string) {
-	req := httplib.Get(host+"/getLic?device="+getMacMD5()).Header("sign", sign.Sign(deviceID))
+	req := httplib.Get(c.host+"/getLic?device="+getMacMD5()).Header("sign", sign.Sign(deviceID))
 	res, err := req.String()
 	if err != nil {
 		isOk = false
