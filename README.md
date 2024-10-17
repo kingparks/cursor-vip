@@ -6,12 +6,16 @@
 
 
 ### Usage
-Install cursor-vip:
+Install cursor-vip (download directly from GitHub):
+```bash
+bash <(curl https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
+```
+Install cursor-vip (through ghp.ci proxy):
 ```bash
 bash <(curl https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
 ```
 
-Launch cursor-vip:
+Launch cursor-vip ():
 ```bash
 cursor-vip
 ```
@@ -22,7 +26,7 @@ Strong proxy mode For the first time after starting, you need to install the tru
 
 Enjoy cursor-vip:
 * Open the CURSOR code editor, click the settings icon in the upper right corner, and you can see that you are already a VIP account.
-* //TODO The chat question function is currently not working well, to be fixed; you can use code prompts and code comments to make up for this defect.
+* Enjoy code prompts and chat functions.
 
 ### Star History
 ![Star History Chart](https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date)
