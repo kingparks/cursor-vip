@@ -10,15 +10,15 @@
 Open the terminal on MacOS/Linux; Open Git Bash on Windows. Then execute the following command to install:
 >some computers may report false positives, need to close the antivirus software/computer housekeeper/security protection and then proceed
 
-Method 1:Install via GitHub script
+Method 1: Install via GitHub script
 ```bash
 bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
 ```
-Method 2:Install via ghp.ci proxy script
+Method 2: Install via ghp.ci proxy script
 ```bash
 bash <(curl -Lk https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
 ```
-Method 3:Manually download the binary file
+Method 3: Manually download the binary file
 > download the binary file for the corresponding operating system from the [release](https://github.com/kingparks/cursor-vip/releases) page
  ```shell
 # MaxOS/Linux
