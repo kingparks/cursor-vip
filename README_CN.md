@@ -5,17 +5,29 @@
 `cursor-vip` 是一个用于 CURSOR 智能代码编辑器 无需账号登录即可享受VIP智能提示的工具服务。
 
 
-### 使用
-安装 cursor-vip (直接从github下载)：
+### 使用方式
+
+在 MacOS/Linux 中，请打开终端；在 Windows 中，请打开 Git Bash。然后执行以下命令来安装：
+> 部分电脑可能会误报毒，需要关闭杀毒软件/电脑管家/安全防护再进行
+
+方式1：通过 ghp.ci 代理脚本
 ```bash
 bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
 ```
-安装 cursor-vip (通过ghp.ci代理)：
+方式2：通过 GitHub 脚本
 ```bash
 bash <(curl -Lk https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
 ```
-安装 cursor-vip (手动)：
+方式3：手动下在二进制文件
 > 从 [release](https://github.com/kingparks/cursor-vip/releases) 页下载对应操作系统的二进制文件
+```shell
+# MaxOS/Linux
+sudo mv cursor-vip_xx_xxx /usr/local/bin/cursor-vip;
+chmod +x /usr/local/bin/cursor-vip;
+cursor-vip githubReadme;
+# Windows
+# 双击 cursor-vip_xx_xxx.exe
+```
 
 启动 cursor-vip：
 ```bash

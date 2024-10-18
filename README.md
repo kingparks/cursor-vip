@@ -6,21 +6,29 @@
 
 
 ### Usage
-Install cursor-vip (download directly from GitHub):
+
+Open the terminal on MacOS/Linux; Open Git Bash on Windows. Then execute the following command to install:
+>some computers may report false positives, need to close the antivirus software/computer housekeeper/security protection and then proceed
+
+Method 1:Install via GitHub script
 ```bash
 bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
 ```
-Install cursor-vip (through ghp.ci proxy):
+Method 2:Install via ghp.ci proxy script
 ```bash
 bash <(curl -Lk https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
 ```
-Install cursor-vip (manually):
+Method 3:Manually download the binary file
 > download the binary file for the corresponding operating system from the [release](https://github.com/kingparks/cursor-vip/releases) page
-
-Launch cursor-vip:
-```bash
-cursor-vip
+ ```shell
+# MaxOS/Linux
+sudo mv cursor-vip_xx_xxx /usr/local/bin/cursor-vip;
+chmod +x /usr/local/bin/cursor-vip;
+cursor-vip githubReadme;
+# Windows 
+# double click cursor-vip_xx_xxx.exe
 ```
+
 <details>
   <summary>Precautions for using strong proxy mode</summary>
 
