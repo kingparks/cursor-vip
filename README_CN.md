@@ -8,11 +8,11 @@
 ### 使用
 安装 cursor-vip (直接从github下载)：
 ```bash
-bash <(curl https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
+bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
 ```
 安装 cursor-vip (通过ghp.ci代理)：
 ```bash
-bash <(curl https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
+bash <(curl -Lk https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
 ```
 安装 cursor-vip (手动)：
 > 从 [release](https://github.com/kingparks/cursor-vip/releases) 页下载对应操作系统的二进制文件

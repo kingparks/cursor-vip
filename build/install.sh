@@ -67,7 +67,7 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
     echo "Please enter the boot password"
   fi;
   sudo mkdir -p /usr/local/bin
-  sudo curl -Lo /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
+  sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行；下次可直接输入 cursor-vip 并回车来运行程序"
@@ -80,7 +80,7 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
 fi;
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
-  curl -Lo ${USERPROFILE}/Desktop/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
+  curl -Lko ${USERPROFILE}/Desktop/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行; 下次可直接输入 ./cursor-vip.exe 并回车来运行程序"
     echo "运行后如果360等杀毒软件误报木马，添加信任后，重新输入./cursor-vip.exe 并回车来运行程序"
