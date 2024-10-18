@@ -240,6 +240,60 @@ func getMacMD5() string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
 }
 
+func getMacMD5_241018() string {
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		fmt.Println("err:", err)
+		return ""
+	}
+
+	var macAddress, bluetoothAddress, wifiAddress []string
+	var macError []string
+
+	//virtualMacPrefixes := []string{
+	//	"00:05:69", "00:0C:29", "00:1C:14", "00:50:56", // VMware
+	//	"00:15:5D",             // Hyper-V
+	//	"08:00:27", "0A:00:27", // VirtualBox
+	//}
+
+	for _, inter := range interfaces {
+		hardwareAddr := inter.HardwareAddr.String()
+		if hardwareAddr == "" {
+			continue
+		}
+		macError = append(macError, inter.Name+": "+hardwareAddr)
+
+		//if isVirtualMac(hardwareAddr, virtualMacPrefixes) {
+		//	continue
+		//}
+
+		switch {
+		case inter.Name == "en0", inter.Name == "Ethernet0", inter.Name == "以太网":
+			macAddress = append(macAddress, hardwareAddr)
+		case inter.Name == "Bluetooth", inter.Name == "蓝牙网络连接":
+			bluetoothAddress = append(bluetoothAddress, hardwareAddr)
+		case inter.Name == "Wi-Fi", inter.Name == "WLAN", inter.Name == "无线网络":
+			wifiAddress = append(wifiAddress, hardwareAddr)
+		}
+	}
+
+	if len(macAddress) == 0 {
+		macAddress = append(macAddress, bluetoothAddress...)
+		if len(macAddress) == 0 {
+			macAddress = append(macAddress, wifiAddress...)
+		}
+		if len(macAddress) == 0 {
+			//fmt.Printf(red, "no mac address found,Please contact customer service")
+			//_, _ = fmt.Scanln()
+			//return macErrorStr
+		}
+	}
+	sort.Strings(macError)
+	return strings.Join(macError, "\n")
+	//sort.Strings(macAddress)
+	//return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
+}
+
 func printAD() {
 	ad := Cli.GetAD()
 	if len(ad) == 0 {
