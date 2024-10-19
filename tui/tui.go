@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/atotto/clipboard"
+	"github.com/denisbrodbeck/machineid"
 	"howett.net/plist"
 	"net"
 	"os"
@@ -292,6 +293,15 @@ func getMacMD5_241018() string {
 	return strings.Join(macError, "\n")
 	//sort.Strings(macAddress)
 	//return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
+}
+func getMacMD5_241019() string {
+	id, err := machineid.ID()
+	if err != nil {
+		return err.Error()
+	}
+	id = strings.ToLower(id)
+	id = strings.ReplaceAll(id, "-", "")
+	return id
 }
 
 func printAD() {

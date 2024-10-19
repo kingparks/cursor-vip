@@ -99,6 +99,7 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	body, _ := json.Marshal(map[string]string{
 		"device":    deviceID,
 		"deviceMac": getMacMD5_241018(),
+		"machineID": getMacMD5_241019(),
 		"sDevice":   getPromotion(),
 	})
 	dUser, _ := user.Current()
