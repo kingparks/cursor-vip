@@ -15,12 +15,13 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/unknwon/i18n"
 )
 
-var version = 113
+var version = 114
 
 var hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 var host = hosts[0]
@@ -36,6 +37,7 @@ var defaultColor = "%s"
 var lang, _ = getLocale()
 var deviceID = getMacMD5()
 var Cli = Client{Hosts: hosts}
+var Sigs chan os.Signal
 
 //go:embed all:locales
 var localeFS embed.FS
@@ -98,7 +100,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	checkUpdate(version)
 	fmt.Println()
 
-	if runtime.GOOS != "linux" {
+	if false {
 		fmt.Printf(defaultColor, Trr.Tr("选择启动模式："))
 		for i, v := range []string{Trr.Tr("极简模式"), Trr.Tr("强劲代理模式")} {
 			fmt.Printf(hGreen, fmt.Sprintf("%d. %s\t", i+1, v))
@@ -142,7 +144,29 @@ func Run() (productSelected string, modelIndexSelected int) {
 		productSelected = jbProduct[0]
 	}
 	// 到期了
+	periodIndex := 1
 	if expTime.Before(time.Now()) {
+		fmt.Printf(defaultColor, Trr.Tr("选择有效期："))
+		jbPeriod := []string{"1" + Trr.Tr("年(购买)"), "2" + Trr.Tr("小时(免费)")}
+		for i, v := range jbPeriod {
+			fmt.Printf(hGreen, fmt.Sprintf("%d. %s\t", i+1, v))
+		}
+		fmt.Println()
+		fmt.Printf("%s", Trr.Tr("请输入有效期编号（直接回车默认为1）："))
+		_, _ = fmt.Scanln(&periodIndex)
+		if periodIndex < 1 || periodIndex > len(jbPeriod) {
+			fmt.Println(Trr.Tr("输入有误"))
+			return
+		}
+		fmt.Println(Trr.Tr("选择的有效期为：") + jbPeriod[periodIndex-1])
+		fmt.Println()
+
+		if periodIndex == 2 {
+			fmt.Printf(green, Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+			countDown(2 * 60 * 60)
+			return
+		}
+
 		payUrl, orderID := Cli.GetPayUrl()
 		isCopyText := ""
 		errClip := clipboard.WriteAll(payUrl)
@@ -160,15 +184,30 @@ func Run() (productSelected string, modelIndexSelected int) {
 			fmt.Println(Trr.Tr("未捐赠,请捐赠完成后回车"))
 			goto checkPay
 		}
-		isOk, result := Cli.GetLic()
-		if !isOk {
-			fmt.Printf(red, result)
-			return
-		}
+		_, _, _, _, exp = Cli.GetMyInfo(deviceID)
+		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
 	}
 	fmt.Printf(green, Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+	countDown(int(expTime.Sub(time.Now()).Seconds()))
 	return
+}
+func countDown(seconds int) {
+	go func(seconds int) {
+		countdown := seconds // Countdown in seconds
+		for countdown >= 0 {
+			days := countdown / (24 * 3600)
+			hours := (countdown % (24 * 3600)) / 3600
+			minutes := (countdown % 3600) / 60
+			seconds := countdown % 60
+
+			fmt.Printf("\r%dd %dh %dm %ds", days, hours, minutes, seconds)
+			time.Sleep(1 * time.Second)
+			countdown--
+		}
+		// 发送退出信号
+		Sigs <- syscall.SIGTERM
+	}(seconds)
 }
 
 func getMacMD5() string {

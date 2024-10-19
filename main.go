@@ -14,10 +14,10 @@ func main() {
 }
 
 func startServer(productSelected string, modelIndexSelected int) {
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGKILL)
+	tui.Sigs = make(chan os.Signal, 1)
+	signal.Notify(tui.Sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGKILL)
 	go func() {
-		<-sigs
+		<-tui.Sigs
 		auth.UnSetClient(productSelected)
 		if modelIndexSelected == 2 {
 			tui.UnSetProxy()
