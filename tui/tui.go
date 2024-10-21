@@ -86,6 +86,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 
 	fmt.Printf(green, Trr.Tr("CURSOR VIP")+` v`+strings.Join(strings.Split(fmt.Sprint(version), ""), "."))
 	Cli.SetProxy(lang)
+	checkUpdate(version)
 	sCount, sPayCount, _, _, exp := Cli.GetMyInfo(deviceID)
 	fmt.Printf(green, Trr.Tr("设备码")+":"+deviceID)
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
@@ -97,7 +98,6 @@ func Run() (productSelected string, modelIndexSelected int) {
 	fmt.Println()
 
 	printAD()
-	checkUpdate(version)
 	fmt.Println()
 
 	if false {
