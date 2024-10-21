@@ -31,8 +31,13 @@ cursor-vip githubReadme;
 
 启动 cursor-vip：
 ```bash
+# MaxOS/Linux
 cursor-vip
+# Windows
+# 双击 cursor-vip_xx_xxx.exe
 ```
+
+<!--
 <details>
   <summary>使用强劲代理模式注意事项</summary>
 
@@ -42,6 +47,7 @@ cursor-vip
 * Linux: //TODO linux 目前只支持极简模式
 
 </details>
+-->
 
 享受 cursor-vip：
 * 打开 CURSOR 代码编辑器，点击右上角设置图标，可看到已是VIP账号。
