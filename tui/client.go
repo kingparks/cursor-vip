@@ -41,13 +41,14 @@ func (c *Client) SetProxy(lang string) {
 		}
 		proxyText = os.Getenv("all_proxy") + " " + Trr.Tr("经由") + " all_proxy " + Trr.Tr("代理访问")
 	}
+	ua := fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","machineID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, machineID, sign.Sign(deviceID))
 	httplib.SetDefaultSetting(httplib.BeegoHTTPSettings{
 		Proxy:            proxy,
 		ReadWriteTimeout: 30 * time.Second,
 		ConnectTimeout:   30 * time.Second,
 		Gzip:             true,
 		DumpBody:         true,
-		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","machineID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, machineID, sign.Sign(deviceID)),
+		UserAgent:        ua,
 	})
 	if len(proxyText) > 0 {
 		fmt.Printf(yellow, proxyText)
@@ -98,7 +99,7 @@ func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
 func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, exp string) {
 	body, _ := json.Marshal(map[string]string{
 		"device":    deviceID,
-		"deviceMac": getMacMD5_241018(),
+		"deviceMac": getMac_241018(),
 		"sDevice":   getPromotion(),
 	})
 	dUser, _ := user.Current()
