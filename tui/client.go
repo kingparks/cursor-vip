@@ -47,7 +47,7 @@ func (c *Client) SetProxy(lang string) {
 		ConnectTimeout:   30 * time.Second,
 		Gzip:             true,
 		DumpBody:         true,
-		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, sign.Sign(deviceID)),
+		UserAgent:        fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","machineID":"%s","sign":"%s"}`, lang, runtime.GOOS, runtime.GOARCH, version, deviceID, machineID, sign.Sign(deviceID)),
 	})
 	if len(proxyText) > 0 {
 		fmt.Printf(yellow, proxyText)
@@ -99,7 +99,6 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	body, _ := json.Marshal(map[string]string{
 		"device":    deviceID,
 		"deviceMac": getMacMD5_241018(),
-		"machineID": getMacMD5_241019(),
 		"sDevice":   getPromotion(),
 	})
 	dUser, _ := user.Current()
@@ -133,7 +132,7 @@ func (c *Client) CheckVersion(version string) (upUrl string) {
 }
 
 func (c *Client) GetLic() (isOk bool, result string) {
-	req := httplib.Get(c.host+"/getLic?device="+getMacMD5()).Header("sign", sign.Sign(deviceID))
+	req := httplib.Get(c.host+"/getLic").Header("sign", sign.Sign(deviceID))
 	res, err := req.String()
 	if err != nil {
 		isOk = false

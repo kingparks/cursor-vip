@@ -21,7 +21,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 114
+var version = 115
 
 var hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 var host = hosts[0]
@@ -35,7 +35,8 @@ var dGreen = "\033[4;32m%s\033[0m\n"
 var red = "\033[31m%s\033[0m\n"
 var defaultColor = "%s"
 var lang, _ = getLocale()
-var deviceID = getMacMD5()
+var deviceID = getMacMD5_241018()
+var machineID = getMacMD5_241019()
 var Cli = Client{Hosts: hosts}
 var Sigs chan os.Signal
 
@@ -287,14 +288,14 @@ func getMacMD5_241018() string {
 		return ""
 	}
 
-	var macAddress, bluetoothAddress, wifiAddress []string
+	var macAddress, bluetoothAddress []string
 	var macError []string
 
-	//virtualMacPrefixes := []string{
-	//	"00:05:69", "00:0C:29", "00:1C:14", "00:50:56", // VMware
-	//	"00:15:5D",             // Hyper-V
-	//	"08:00:27", "0A:00:27", // VirtualBox
-	//}
+	virtualMacPrefixes := []string{
+		"00:05:69", "00:0C:29", "00:1C:14", "00:50:56", // VMware
+		"00:15:5D",             // Hyper-V
+		"08:00:27", "0A:00:27", // VirtualBox
+	}
 
 	for _, inter := range interfaces {
 		hardwareAddr := inter.HardwareAddr.String()
@@ -303,29 +304,32 @@ func getMacMD5_241018() string {
 		}
 		macError = append(macError, inter.Name+": "+hardwareAddr)
 
-		//if isVirtualMac(hardwareAddr, virtualMacPrefixes) {
-		//	continue
-		//}
+		isVirtual := false
+		for _, prefix := range virtualMacPrefixes {
+			if strings.HasPrefix(hardwareAddr, strings.ToLower(prefix)) {
+				isVirtual = true
+				break
+			}
+		}
+		if isVirtual {
+			continue
+		}
 
 		switch {
-		case inter.Name == "en0", inter.Name == "Ethernet0", inter.Name == "以太网":
+		case strings.HasPrefix(inter.Name, "en"), strings.HasPrefix(inter.Name, "Ethernet"), strings.HasPrefix(inter.Name, "以太网"):
 			macAddress = append(macAddress, hardwareAddr)
-		case inter.Name == "Bluetooth", inter.Name == "蓝牙网络连接":
+		case strings.HasPrefix(inter.Name, "Bluetooth"), strings.HasPrefix(inter.Name, "蓝牙网络连接"):
 			bluetoothAddress = append(bluetoothAddress, hardwareAddr)
-		case inter.Name == "Wi-Fi", inter.Name == "WLAN", inter.Name == "无线网络":
-			wifiAddress = append(wifiAddress, hardwareAddr)
 		}
 	}
 
 	if len(macAddress) == 0 {
 		macAddress = append(macAddress, bluetoothAddress...)
 		if len(macAddress) == 0 {
-			macAddress = append(macAddress, wifiAddress...)
-		}
-		if len(macAddress) == 0 {
 			//fmt.Printf(red, "no mac address found,Please contact customer service")
 			//_, _ = fmt.Scanln()
 			//return macErrorStr
+			return getMacMD5_241019()
 		}
 	}
 	sort.Strings(macError)
