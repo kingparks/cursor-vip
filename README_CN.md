@@ -53,7 +53,6 @@ cursor-vip
 * 打开 CURSOR 代码编辑器，点击右上角设置图标，可看到已是VIP账号。
 * 尽情享受代码提示和聊天功能。
 
-
 ### Star History
 ![Star History Chart](https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date)
 
