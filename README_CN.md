@@ -1,6 +1,6 @@
 # cursor-vip
 
-[English](./README.md)
+> 🌐️ 中文 | [English](README.md)
 
 `cursor-vip` 是一个用于 CURSOR 智能代码编辑器 无需账号登录即可享受VIP智能提示的工具服务。
 

@@ -1,6 +1,6 @@
 # cursor-vip
 
-[中文](./README_CN.md)
+> 🌐️ English | [中文](README_CN.md)
 
 `cursor-vip` is a tool service for CURSOR smart code editor to enjoy VIP intelligent prompts without logging in.
 
