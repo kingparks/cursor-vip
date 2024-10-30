@@ -288,54 +288,16 @@ func getMac_241018() string {
 		return ""
 	}
 
-	var macAddress, bluetoothAddress []string
 	var macError []string
-
-	virtualMacPrefixes := []string{
-		"00:05:69", "00:0C:29", "00:1C:14", "00:50:56", // VMware
-		"00:15:5D",             // Hyper-V
-		"08:00:27", "0A:00:27", // VirtualBox
-	}
-
 	for _, inter := range interfaces {
 		hardwareAddr := inter.HardwareAddr.String()
 		if hardwareAddr == "" {
 			continue
 		}
 		macError = append(macError, inter.Name+": "+hardwareAddr)
-
-		isVirtual := false
-		for _, prefix := range virtualMacPrefixes {
-			if strings.HasPrefix(hardwareAddr, strings.ToLower(prefix)) {
-				isVirtual = true
-				break
-			}
-		}
-		if isVirtual {
-			continue
-		}
-
-		switch {
-		case strings.HasPrefix(inter.Name, "en"), strings.HasPrefix(inter.Name, "Ethernet"), strings.HasPrefix(inter.Name, "以太网"):
-			macAddress = append(macAddress, hardwareAddr)
-		case strings.HasPrefix(inter.Name, "Bluetooth"), strings.HasPrefix(inter.Name, "蓝牙网络连接"):
-			bluetoothAddress = append(bluetoothAddress, hardwareAddr)
-		}
-	}
-
-	if len(macAddress) == 0 {
-		macAddress = append(macAddress, bluetoothAddress...)
-		if len(macAddress) == 0 {
-			//fmt.Printf(red, "no mac address found,Please contact customer service")
-			//_, _ = fmt.Scanln()
-			//return macErrorStr
-			//return getMacMD5_241019()
-		}
 	}
 	sort.Strings(macError)
 	return strings.Join(macError, "\n")
-	//sort.Strings(macAddress)
-	//return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
 }
 func getMacMD5_241018() string {
 	interfaces, err := net.Interfaces()
@@ -345,8 +307,6 @@ func getMacMD5_241018() string {
 	}
 
 	var macAddress, bluetoothAddress []string
-	var macError []string
-
 	virtualMacPrefixes := []string{
 		"00:05:69", "00:0C:29", "00:1C:14", "00:50:56", // VMware
 		"00:15:5D",             // Hyper-V
@@ -358,7 +318,6 @@ func getMacMD5_241018() string {
 		if hardwareAddr == "" {
 			continue
 		}
-		macError = append(macError, inter.Name+": "+hardwareAddr)
 
 		isVirtual := false
 		for _, prefix := range virtualMacPrefixes {
@@ -374,7 +333,7 @@ func getMacMD5_241018() string {
 		switch {
 		case strings.HasPrefix(inter.Name, "en"), strings.HasPrefix(inter.Name, "Ethernet"), strings.HasPrefix(inter.Name, "以太网"):
 			macAddress = append(macAddress, hardwareAddr)
-		case strings.HasPrefix(inter.Name, "Bluetooth"), strings.HasPrefix(inter.Name, "蓝牙网络连接"):
+		case strings.HasPrefix(inter.Name, "Bluetooth"), strings.HasSuffix(inter.Name, "Bluetooth"), strings.HasPrefix(inter.Name, "蓝牙网络连接"):
 			bluetoothAddress = append(bluetoothAddress, hardwareAddr)
 		}
 	}
@@ -388,8 +347,6 @@ func getMacMD5_241018() string {
 			return getMacMD5_241019()
 		}
 	}
-	//sort.Strings(macError)
-	//return strings.Join(macError, "\n")
 	sort.Strings(macAddress)
 	return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
 }
