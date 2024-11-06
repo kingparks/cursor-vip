@@ -24,7 +24,7 @@ import (
 var version = 116
 
 var hosts = []string{"http://129.154.205.7:7193", "https://cursor.jeter.eu.org"}
-var host = hosts[0]
+var host = hosts[1]
 var githubPath = "https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/"
 var err error
 
