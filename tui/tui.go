@@ -21,7 +21,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 116
+var version = 228
 
 var hosts = []string{"http://129.154.205.7:7193", "https://cursor.jeter.eu.org"}
 var host = hosts[1]
@@ -86,6 +86,14 @@ func Run() (productSelected string, modelIndexSelected int) {
 	}
 
 	fmt.Printf(green, Trr.Tr("CURSOR VIP")+` v`+strings.Join(strings.Split(fmt.Sprint(version), ""), "."))
+	// 检查是否在容器环境
+	if content, err := os.ReadFile("/proc/1/cgroup"); err == nil {
+		if strings.Contains(string(content), "/docker/") {
+			fmt.Printf(red, Trr.Tr("不支持容器环境"))
+			_, _ = fmt.Scanln()
+			panic(Trr.Tr("不支持容器环境"))
+		}
+	}
 	Cli.SetProxy(lang)
 	checkUpdate(version)
 	sCount, sPayCount, _, _, exp := Cli.GetMyInfo(deviceID)
