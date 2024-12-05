@@ -445,11 +445,15 @@ func getLocale() (langRes, locRes string) {
 		}
 		plistB, err := os.ReadFile(os.Getenv("HOME") + "/Library/Preferences/.GlobalPreferences.plist")
 		if err != nil {
+			fmt.Println(err)
+			_, _ = fmt.Scanln()
 			panic(err)
 		}
 		var a map[string]interface{}
 		_, err = plist.Unmarshal(plistB, &a)
 		if err != nil {
+			fmt.Println(err)
+			_, _ = fmt.Scanln()
 			panic(err)
 		}
 		langLocRaw := a["AppleLocale"].(string)

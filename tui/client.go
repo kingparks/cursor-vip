@@ -112,6 +112,8 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	}
 	res, err := httplib.Post(c.host+"/my").Header("sign", sign.Sign(deviceID)).Header("deviceName", deviceName).Body(body).String()
 	if err != nil {
+		fmt.Println(fmt.Sprintf("\u001B[31m%s\u001B[0m", err))
+		_, _ = fmt.Scanln()
 		panic(fmt.Sprintf("\u001B[31m%s\u001B[0m", err))
 		return
 	}
