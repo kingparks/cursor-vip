@@ -60,6 +60,28 @@ By promoting cursor-vip, you can automatically get up to an unlimited amount of 
 2. Post articles on platforms such as SegmentFault/Stack Overflow/GitHub Discussions/Reddit/Dev.to/Hacker News/DZone/V2EX/Quora/WeChat Official Account/Zhihu/Bilibili/CSDN/, promoting the use of cursor pro in this way, and attach your own promotional installation command or cloned github address.
 3. Comment under cursor related articles or videos, for example: "Cooperate with Github's [Your Github Name]/cursor-vip for low-priced or freelancing Pro"
 ---
+### Q & A
+
+* I have two computers at home and at work, and the usage time will not overlap. Can I pay for one and extend the usage period of two devices?
+> No, because the cursor official is used to prompt Too many computers used according to the device detection, and the platform currently shares a Pro account for every 8 devices
+
+* Slow request, add requests here...
+* Global Rate Limit Hit - Server is Busy...
+* Unable to reach Anthropic...
+> cursor official normal busy period advanced model queue, change small model can solve, or try to delete the cache:
+> Mac: rm ~/Library/Application\ Support/Cursor
+> Windows: rd -r %UserProfile%\AppData\Roaming\Cursor\Cache
+
+* Using composer prompts: We're currently receiving a large number of slow requests and could not queue yours
+> There is currently no solution, using it more, composer itself problem, can only wait until the next day to try again, at this time, just use chat
+
+* Is it possible not to display the window after running?
+> No, you need to keep a window open to maintain a service for cursor use, but you can minimize it
+
+* After promotion, the increase in the number of people promoted is not displayed
+> The recommended person needs to use the complete promotion command to install, and it only takes effect for the first installation of the device
+
+---
 ### Star History
 <a href="https://star-history.com/#kingparks/cursor-vip&Date">
  <picture>
