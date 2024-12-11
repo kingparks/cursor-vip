@@ -75,10 +75,10 @@ By promoting cursor-vip, you can automatically get up to an unlimited amount of 
 * Using composer prompts: We're currently receiving a large number of slow requests and could not queue yours
 > There is indeed this problem, currently no solution, at this time, use chat
 
-* Connection failed. check your internet connection or VPN...
+* Prompts: Connection failed. check your internet connection or VPN...
 > The problem of computer network, such as setting a proxy, but the proxy service is not started or abnormal, starting or closing the proxy service can generally solve the problem, and if it still does not work, you can try to restart the computer
 
-* Is it possible not to display the window after running?
+* Prompts: Is it possible not to display the window after running?
 > No, you need to keep a window open to maintain a service for cursor use, but you can minimize it
 
 * After promotion, the increase in the number of people promoted is not displayed
