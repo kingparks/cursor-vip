@@ -72,13 +72,16 @@ cursor-vip
 > Windows: rd -r %UserProfile%\AppData\Roaming\Cursor\Cache
 
 * 使用 composer 提示：We're currently receiving a large number of slow requests and could not queue yours
-> 目前没有解决方案，用的多了,composer 本身的问题,只能等第二天再试，这时候先将就用 chat
+> 存在这个问题，目前没有解决方案，这时候先将就用 chat
+
+* 提示：Connection failed. check your internet connection or VPN...
+> 电脑网络的问题，例如设置了代理，但是代理服务没有启动或者异常，启动或关闭代理服务一般可解决，还不行可以尝试重启电脑
 
 * 运行后可以不显示窗口吗
 > 不行，需要开着窗口维持一个服务供 cursor 使用，但是可以最小化
 
 * 推广后没有显示推广人数的增加
-> 被推荐者需要用完整的推广命令来安装，且只对该设备的首次安装生效
+> 被推荐者需要用完整的推广命令来安装，且只对该设备的首次安装生效，另外例如 VMware 等虚拟机不会增加人数
 
 ---
 ### Star History

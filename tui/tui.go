@@ -21,7 +21,7 @@ import (
 	"github.com/unknwon/i18n"
 )
 
-var version = 229
+var version = 230
 
 var hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 var host = hosts[0]
