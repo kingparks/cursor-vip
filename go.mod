@@ -6,6 +6,7 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/atotto/clipboard v0.1.4
 	github.com/denisbrodbeck/machineid v1.0.1
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/edluis37/shortuuid/v4 v4.0.0-20221015205646-3117f62f0327
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-pay/gopay v1.5.103
