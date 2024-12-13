@@ -12,11 +12,11 @@
 
 方式1：通过 ghp.ci 代理脚本
 ```bash
-bash <(curl -Lk https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) githubReadme
+bash <(curl -Lk https://ghp.ci/https://github.com/kingparks/cursor-vip/releases/download/latest/install.sh) 246E2502-A412-5BD4-85B7-B774C2CDA763
 ```
 方式2：通过 GitHub 脚本
 ```bash
-bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
+bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) 246E2502-A412-5BD4-85B7-B774C2CDA763
 ```
 方式3：手动下载二进制文件
 > 从 [release](https://github.com/kingparks/cursor-vip/releases) 页下载对应操作系统的二进制文件
@@ -24,7 +24,7 @@ bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest
 # MaxOS/Linux
 sudo mv cursor-vip_xx_xxx /usr/local/bin/cursor-vip;
 chmod +x /usr/local/bin/cursor-vip;
-cursor-vip githubReadme;
+cursor-vip 246E2502-A412-5BD4-85B7-B774C2CDA763;
 # Windows
 # 双击 cursor-vip_xx_xxx.exe
 ```
