@@ -45,11 +45,13 @@ cursor-vip
 
 ---
 
-### [Promotion Guide](docs/promotion.md)
+### Promotion Guide
+[Promotion Guide](docs/promotion.md)
 
 ---
 
-### [Q & A](docs/Q&A.md)
+### Q & A
+[Q & A](docs/Q&A.md)
 
 ---
 ### Star History

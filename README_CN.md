@@ -44,11 +44,13 @@ cursor-vip
 * 尽情享受代码提示和聊天功能。
 ---
 
-### [推广指南](docs/promotion_CN.md)
+### 推广指南
+[推广指南](docs/promotion_CN.md)
 
 ---
 
-### [提问与回答](docs/Q&A_CN.md)
+### 提问与回答
+[提问与回答](docs/Q&A_CN.md)
 
 ---
 ### Star History

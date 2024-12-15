@@ -1,5 +1,7 @@
 ### Proxy mode
 
+> 🌐️ English | [中文](proxyMode_CN.md)
+
 > Notice that trusting certificates is a very dangerous thing. If you set the proxy to the system proxy, the proxy service can capture all network requests on your computer. Therefore, for untrusted programs, never trust certificates and set the proxy to the system proxy.
 
 > The proxy mode is that cursor-vip starts a proxy service locally on your computer, only the proxy configuration of the cursor client points to the proxy service of cursor-vip, and other software does not use this proxy. We promise not to record any of your network requests.

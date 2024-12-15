@@ -1,5 +1,7 @@
 ### Q & A
 
+> 🌐️ English | [中文](Q&A_CN.md)
+
 * I have two computers at home and at work, and the usage time will not overlap. Can I pay for one and extend the usage period of two devices?
 > No, because the cursor official is used to prompt Too many computers used according to the device detection, and the platform currently shares a Pro account for every 8 devices
 
