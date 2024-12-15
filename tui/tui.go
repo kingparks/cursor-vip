@@ -164,8 +164,9 @@ func Run() (productSelected string, modelIndexSelected int) {
 		_, _, _, _, exp = client.Cli.GetMyInfo(params.DeviceID)
 		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
-		tool.CountDown(int(expTime.Sub(time.Now()).Seconds()))
 	}
+	fmt.Printf(params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+	tool.CountDown(int(expTime.Sub(time.Now()).Seconds()))
 	return
 }
 

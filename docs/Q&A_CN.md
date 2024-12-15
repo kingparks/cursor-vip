@@ -18,6 +18,9 @@
 * 提示：Connection failed. check your internet connection or VPN...
 > 电脑网络的问题，例如设置了代理，但是代理服务没有启动或者异常，启动或关闭代理服务一般可解决，还不行可以尝试重启电脑
 
+* 提示：Too many computers used within the last 24 hours
+> 目前设置了定时任务，如果出现此类情况，服务端会自动换账号，但是需要等待一段时间，客户端段也会每7分钟检测一次，直到 cursor-vip 显示出 “遇到问题？按回车键将重启 cursor 解决问题” 这时候按回车键重启即可 
+
 * 运行后可以不显示窗口吗
 > 不行，需要开着窗口维持一个服务供 cursor 使用，但是可以最小化
 
