@@ -66,6 +66,9 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
   else
     echo "Please enter the boot password"
   fi;
+  # 停掉正在运行的cursor-vip
+  pkill cursor-vip || true
+  # 安装
   sudo mkdir -p /usr/local/bin
   sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
@@ -80,6 +83,9 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
 fi;
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
+  # 停掉正在运行cursor-vip
+  taskkill /f /im cursor-vip.exe || true
+  # 安装
   curl -Lko ${USERPROFILE}/Desktop/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行; 下次可直接输入 ./cursor-vip.exe 并回车来运行程序"
