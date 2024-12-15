@@ -2,33 +2,71 @@ package shortcut
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/eiannone/keyboard"
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/kingparks/cursor-vip/tui/tool"
-	hook "github.com/robotn/gohook"
 )
 
 func Do() {
-	// 设置语言为英文
-	hook.Register(hook.KeyDown, []string{"s", "e", "n"}, func(e hook.Event) {
-		tool.SetConfig("en", params.Mode)
-		fmt.Printf(params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
-	})
-	// 设置语言为中文
-	hook.Register(hook.KeyDown, []string{"s", "z", "h"}, func(e hook.Event) {
-		tool.SetConfig("zh", params.Mode)
-		fmt.Printf(params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
-	})
-	// 设置为普通模式
-	hook.Register(hook.KeyDown, []string{"s", "m", "1"}, func(e hook.Event) {
-		tool.SetConfig(params.Lang, 1)
-		fmt.Printf(params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
-	})
-	// 设置为代理模式
-	hook.Register(hook.KeyDown, []string{"s", "m", "2"}, func(e hook.Event) {
-		tool.SetConfig(params.Lang, 2)
-		fmt.Printf(params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
-	})
-	// 普通
-	s := hook.Start()
-	<-hook.Process(s)
+	if err := keyboard.Open(); err != nil {
+		fmt.Println("Failed to initialize keyboard:", err)
+		return
+	}
+	defer keyboard.Close()
+
+	var keyBuffer []rune
+	for {
+		char, key, err := keyboard.GetKey()
+		if err != nil {
+			fmt.Println("Error reading keyboard:", err)
+			return
+		}
+
+		// 检查是否按下 Ctrl+C
+		if key == keyboard.KeyCtrlC {
+			return
+		}
+
+		// 将按键添加到缓冲区
+		if char != 0 {
+			keyBuffer = append(keyBuffer, char)
+		}
+
+		// 保持缓冲区最多3个字符
+		if len(keyBuffer) > 3 {
+			keyBuffer = keyBuffer[1:]
+		}
+
+		// 检查快捷键组合
+		combination := string(keyBuffer)
+
+		switch {
+		case strings.HasSuffix(combination, "sen"):
+			tool.SetConfig("en", params.Mode)
+			fmt.Println()
+			fmt.Printf(params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
+			keyBuffer = nil
+
+		case strings.HasSuffix(combination, "szh"):
+			tool.SetConfig("zh", params.Mode)
+			fmt.Println()
+			fmt.Printf(params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
+			keyBuffer = nil
+
+		case strings.HasSuffix(combination, "sm1"):
+			tool.SetConfig(params.Lang, 1)
+			fmt.Println()
+			fmt.Printf(params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
+			keyBuffer = nil
+
+		case strings.HasSuffix(combination, "sm2"):
+			tool.SetConfig(params.Lang, 2)
+			fmt.Println()
+			fmt.Printf(params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
+			keyBuffer = nil
+
+		}
+	}
 }

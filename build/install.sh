@@ -84,7 +84,7 @@ fi;
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
-  taskkill /f /im cursor-vip.exe || true
+  taskkill -f -im cursor-vip.exe || true
   # 安装
   curl -Lko ${USERPROFILE}/Desktop/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
   if [ "$lc_type" = "zh" ]; then

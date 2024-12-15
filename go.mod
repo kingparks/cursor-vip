@@ -8,6 +8,7 @@ require (
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/edluis37/shortuuid/v4 v4.0.0-20221015205646-3117f62f0327
+	github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-pay/gopay v1.5.103
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
@@ -16,7 +17,6 @@ require (
 	github.com/logoove/sqlite v1.16.1
 	github.com/lqqyt2423/go-mitmproxy v1.8.5
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/robotn/gohook v0.41.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tidwall/gjson v1.17.1
 	github.com/unknwon/i18n v0.0.0-20210904045753-ff3a8617e361
@@ -64,7 +64,6 @@ require (
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	github.com/vcaesar/keycode v0.10.1 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
