@@ -12,7 +12,6 @@ import (
 	"os/exec"
 	"runtime"
 	"sort"
-	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -103,30 +102,17 @@ func GetLocale() (langRes, locRes string) {
 	return
 }
 
-// 获取推广人
-func GetPromotion() (promotion string) {
-	b, _ := os.ReadFile(os.Getenv("HOME") + "/.cursor-viprc")
-	promotion = strings.TrimSpace(string(b))
-	if len(promotion) == 0 {
-		if len(os.Args) > 1 {
-			promotion = os.Args[1]
-		}
-	}
-	return
-}
-
 // 获取配置
-func GetConfig() (lang string, mode int64) {
-	b, _ := os.ReadFile(os.Getenv("HOME") + "/.cursor-viprc")
-	config := strings.TrimSpace(string(b))
-	configs := strings.Split(config, "|")
-	if len(configs) == 0 {
-		lang, _ = GetLocale()
-		mode = 1
+func GetConfig() (lang, promotion string, mode int64) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
 		return
 	}
-	lang = gjson.Get(configs[1], "lang").String()
-	mode = gjson.Get(configs[1], "mode").Int()
+	b, _ := os.ReadFile(homeDir + "/.cursor-viprc")
+	s := string(b)
+	lang = gjson.Get(s, "lang").String()
+	mode = gjson.Get(s, "mode").Int()
+	promotion = gjson.Get(s, "promotion").String()
 	if lang == "" {
 		lang, _ = GetLocale()
 	}
@@ -138,85 +124,12 @@ func GetConfig() (lang string, mode int64) {
 
 // 设置配置
 func SetConfig(lang string, mode int64) {
-	config := fmt.Sprintf(`{"lang":"%s","mode":%d}`, lang, mode)
-	b, _ := os.ReadFile(os.Getenv("HOME") + "/.cursor-viprc")
-	configs := strings.Split(strings.TrimSpace(string(b)), "|")
-	if len(configs) == 0 {
-		config += "|" + config
-	} else {
-		config = configs[0] + "|" + config
-	}
-	_ = os.WriteFile(os.Getenv("HOME")+"/.cursor-viprc", []byte(config), 0644)
-}
-
-func GetMacMD5() string {
-	// 获取本机的MAC地址
-	interfaces, err := net.Interfaces()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		fmt.Println("err:", err)
-		return ""
+		return
 	}
-	var macAddress []string
-	var wifiAddress []string
-	var bluetoothAddress []string
-	var macErrorStr string
-	for _, inter := range interfaces {
-		// 排除虚拟网卡
-		hardwareAddr := inter.HardwareAddr.String()
-		if hardwareAddr == "" {
-			//fmt.Println(fmt.Sprintf("log: have not hardwareAddr :%+v",inter))
-			continue
-		}
-		macErrorStr += inter.Name + ":" + hardwareAddr + "\n"
-		virtualMacPrefixes := []string{
-			"00:05:69", "00:0C:29", "00:1C:14", "00:50:56", // VMware
-			"00:15:5D",             // Hyper-V
-			"08:00:27", "0A:00:27", // VirtualBox
-		}
-		isVirtual := false
-		for _, prefix := range virtualMacPrefixes {
-			if strings.HasPrefix(hardwareAddr, strings.ToLower(prefix)) {
-				isVirtual = true
-				break
-			}
-		}
-		if isVirtual {
-			//fmt.Println(fmt.Sprintf("log: isVirtual :%+v",inter))
-			continue
-		}
-		// 大于en6的排除
-		if strings.HasPrefix(inter.Name, "en") {
-			numStr := inter.Name[2:]
-			num, _ := strconv.Atoi(numStr)
-			if num > 6 {
-				//fmt.Println(fmt.Sprintf("log: is num>6 :%+v",inter))
-				continue
-			}
-		}
-		if strings.HasPrefix(inter.Name, "en") || strings.HasPrefix(inter.Name, "Ethernet") || strings.HasPrefix(inter.Name, "以太网") || strings.HasPrefix(inter.Name, "WLAN") {
-			//fmt.Println(fmt.Sprintf("log: add :%+v",inter))
-			macAddress = append(macAddress, hardwareAddr)
-		} else if strings.HasPrefix(inter.Name, "Wi-Fi") || strings.HasPrefix(inter.Name, "无线网络") {
-			wifiAddress = append(wifiAddress, hardwareAddr)
-		} else if strings.HasPrefix(inter.Name, "Bluetooth") || strings.HasPrefix(inter.Name, "蓝牙网络连接") {
-			bluetoothAddress = append(bluetoothAddress, hardwareAddr)
-		} else {
-			//fmt.Println(fmt.Sprintf("log: not add :%+v",inter))
-		}
-	}
-	if len(macAddress) == 0 {
-		macAddress = append(macAddress, wifiAddress...)
-		if len(macAddress) == 0 {
-			macAddress = append(macAddress, bluetoothAddress...)
-		}
-		if len(macAddress) == 0 {
-			fmt.Printf(params.Red, "no mac address found,Please contact customer service")
-			_, _ = fmt.Scanln()
-			return macErrorStr
-		}
-	}
-	sort.Strings(macAddress)
-	return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
+	config := fmt.Sprintf(`{"lang":"%s","promotion":"%s","mode":%d}`, lang, params.Promotion, mode)
+	_ = os.WriteFile(homeDir+"/.cursor-viprc", []byte(config), 0644)
 }
 
 func GetMac_241018() string {
@@ -237,7 +150,7 @@ func GetMac_241018() string {
 	sort.Strings(macError)
 	return strings.Join(macError, "\n")
 }
-func GetMacMD5_241018() string {
+func GetDeviceID() string {
 	interfaces, err := net.Interfaces()
 	if err != nil {
 		fmt.Println("err:", err)
@@ -279,16 +192,16 @@ func GetMacMD5_241018() string {
 	if len(macAddress) == 0 {
 		macAddress = append(macAddress, bluetoothAddress...)
 		if len(macAddress) == 0 {
-			//fmt.Printf(red, "no mac address found,Please contact customer service")
+			//_, _ = fmt.Fprintf(params.ColorOut, red, "no mac address found,Please contact customer service")
 			//_, _ = fmt.Scanln()
 			//return macErrorStr
-			return GetMacMD5_241019()
+			return GetMachineID()
 		}
 	}
 	sort.Strings(macAddress)
 	return fmt.Sprintf("%x", md5.Sum([]byte(strings.Join(macAddress, ","))))
 }
-func GetMacMD5_241019() string {
+func GetMachineID() string {
 	id, err := machineid.ID()
 	if err != nil {
 		return err.Error()
@@ -307,7 +220,7 @@ func CountDown(seconds int) {
 			minutes := (countdown % 3600) / 60
 			seconds := countdown % 60
 
-			fmt.Printf("\r%dd %dh %dm %ds", days, hours, minutes, seconds)
+			_, _ = fmt.Fprintf(params.ColorOut, "\r%dd %dh %dm %ds", days, hours, minutes, seconds)
 			time.Sleep(1 * time.Second)
 			countdown--
 		}

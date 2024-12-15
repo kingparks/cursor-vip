@@ -55,7 +55,7 @@ func (c *Client) SetProxy(lang string) {
 			lang, runtime.GOOS, runtime.GOARCH, params.Version, params.DeviceID, params.MachineID, sign.Sign(params.DeviceID)),
 	})
 	if len(proxyText) > 0 {
-		fmt.Printf(params.Yellow, proxyText)
+		_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, proxyText)
 	}
 }
 
@@ -104,7 +104,7 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	body, _ := json.Marshal(map[string]string{
 		"device":    deviceID,
 		"deviceMac": tool.GetMac_241018(),
-		"sDevice":   tool.GetPromotion(),
+		"sDevice":   params.Promotion,
 	})
 	dUser, _ := user.Current()
 	deviceName := ""

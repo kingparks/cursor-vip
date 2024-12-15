@@ -8,6 +8,7 @@ import (
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/kingparks/cursor-vip/tui/shortcut"
 	"github.com/kingparks/cursor-vip/tui/tool"
+	"github.com/mattn/go-colorable"
 
 	"os"
 	"runtime"
@@ -23,9 +24,10 @@ var localeFS embed.FS
 
 // Run 启动
 func Run() (productSelected string, modelIndexSelected int) {
-	params.Lang, params.Mode = tool.GetConfig()
-	params.DeviceID = tool.GetMacMD5_241018()
-	params.MachineID = tool.GetMacMD5_241019()
+	params.ColorOut = colorable.NewColorableStdout()
+	params.Lang, params.Promotion, params.Mode = tool.GetConfig()
+	params.DeviceID = tool.GetMachineID()
+	params.MachineID = tool.GetMachineID()
 	client.Cli = client.Client{Hosts: params.Hosts}
 
 	localeFileEn, _ := localeFS.ReadFile("locales/en.ini")
@@ -58,11 +60,11 @@ func Run() (productSelected string, modelIndexSelected int) {
 		params.Trr = &params.Tr{Locale: i18n.Locale{Lang: "en"}}
 	}
 
-	fmt.Printf(params.Green, params.Trr.Tr("CURSOR VIP")+` v`+strings.Join(strings.Split(fmt.Sprint(params.Version), ""), "."))
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("CURSOR VIP")+` v`+strings.Join(strings.Split(fmt.Sprint(params.Version), ""), "."))
 	// 检查是否在容器环境
 	if content, err := os.ReadFile("/proc/1/cgroup"); err == nil {
 		if strings.Contains(string(content), "/docker/") {
-			fmt.Printf(params.Red, params.Trr.Tr("不支持容器环境"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("不支持容器环境"))
 			_, _ = fmt.Scanln()
 			panic(params.Trr.Tr("不支持容器环境"))
 		}
@@ -70,34 +72,34 @@ func Run() (productSelected string, modelIndexSelected int) {
 	client.Cli.SetProxy(params.Lang)
 	checkUpdate(params.Version)
 	sCount, sPayCount, _, _, exp := client.Cli.GetMyInfo(params.DeviceID)
-	fmt.Printf(params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
-	fmt.Printf(params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
-	fmt.Printf("\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
+	_, _ = fmt.Fprintf(params.ColorOut, "\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
 		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广10人或推广付费2人可获得一年授权)"))
-	fmt.Printf(params.HGreen, "bash <(curl -Lk "+params.GithubPath+"install.sh) "+params.DeviceID+"\n")
-	fmt.Printf(params.Green, params.Trr.Tr("专属推广链接")+"："+params.Host+"?p="+params.DeviceID)
+	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+"install.sh) "+params.DeviceID+"\n")
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("专属推广链接")+"："+params.Host+"?p="+params.DeviceID)
 	fmt.Println()
 
 	printAD()
 	fmt.Println()
 
 	// 快捷键
-	fmt.Printf(params.Green, params.Trr.Tr("Switch to English：simultaneously press keyboard 's' 'e' 'n'"))
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：simultaneously press keyboard 's' 'e' 'n'"))
 	modelIndexSelected = int(params.Mode)
 	switch params.Mode {
 	case 1:
-		fmt.Printf(params.Green, params.Trr.Tr("切换为代理模式：同时按键盘 's' 'm' '2'"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为代理模式：同时按键盘 's' 'm' '2'"))
 	case 2:
-		fmt.Printf(params.Green, params.Trr.Tr("切换为普通模式：同时按键盘 's' 'm' '1'"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为普通模式：同时按键盘 's' 'm' '1'"))
 	}
 	go shortcut.Do()
 	fmt.Println()
 
 	if len(params.Product) > 1 {
-		fmt.Printf(params.DefaultColor, params.Trr.Tr("选择要授权的产品："))
+		_, _ = fmt.Fprintf(params.ColorOut, params.DefaultColor, params.Trr.Tr("选择要授权的产品："))
 		for i, v := range params.Product {
-			fmt.Printf(params.HGreen, fmt.Sprintf("%d. %s\t", i+1, v))
+			_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, fmt.Sprintf("%d. %s\t", i+1, v))
 		}
 		fmt.Println()
 		fmt.Print(params.Trr.Tr("请输入产品编号（直接回车默认为1，可以同时输入多个例如 145）："))
@@ -122,14 +124,14 @@ func Run() (productSelected string, modelIndexSelected int) {
 	// 到期了
 	periodIndex := 1
 	if expTime.Before(time.Now()) {
-		fmt.Printf(params.DefaultColor, params.Trr.Tr("选择有效期："))
+		_, _ = fmt.Fprintf(params.ColorOut, params.DefaultColor, params.Trr.Tr("选择有效期："))
 		//jbPeriod := []string{"1" + params.Trr.Tr("年(购买)"), "2" + params.Trr.Tr("小时(免费)")}
 		jbPeriod := []string{"1" + params.Trr.Tr("年(购买)")}
 		for i, v := range jbPeriod {
-			fmt.Printf(params.HGreen, fmt.Sprintf("%d. %s\t", i+1, v))
+			_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, fmt.Sprintf("%d. %s\t", i+1, v))
 		}
 		fmt.Println()
-		fmt.Printf("%s", params.Trr.Tr("请输入有效期编号（直接回车默认为1）："))
+		_, _ = fmt.Fprintf(params.ColorOut, "%s", params.Trr.Tr("请输入有效期编号（直接回车默认为1）："))
 		_, _ = fmt.Scanln(&periodIndex)
 		if periodIndex < 1 || periodIndex > len(jbPeriod) {
 			fmt.Println(params.Trr.Tr("输入有误"))
@@ -139,7 +141,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 		fmt.Println()
 
 		//if periodIndex == 2 {
-		//	fmt.Printf(green, Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+		//	_, _ = fmt.Fprintf(params.ColorOut, green, Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
 		//	countDown(2 * 60 * 60)
 		//	return
 		//}
@@ -151,7 +153,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 			isCopyText = params.Trr.Tr("（已复制到剪贴板）")
 		}
 		fmt.Println(params.Trr.Tr("付费已到期,捐赠以获取一年期授权") + isCopyText)
-		fmt.Printf(params.DGreen, payUrl)
+		_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
 		fmt.Println(params.Trr.Tr("捐赠完成后请回车"))
 		//检测控制台回车
 	checkPay:
@@ -165,7 +167,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
 	}
-	fmt.Printf(params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
 	tool.CountDown(int(expTime.Sub(time.Now()).Seconds()))
 	return
 }
@@ -175,7 +177,7 @@ func printAD() {
 	if len(ad) == 0 {
 		return
 	}
-	fmt.Printf(params.Yellow, ad)
+	_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, ad)
 }
 
 func checkUpdate(version int) {
@@ -191,11 +193,11 @@ func checkUpdate(version int) {
 	}
 	switch runtime.GOOS {
 	case "windows":
-		fmt.Printf(params.Red, params.Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到GitBash窗口执行")+isCopyText+`：`)
+		_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到GitBash窗口执行")+isCopyText+`：`)
 	default:
-		fmt.Printf(params.Red, params.Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到新终端窗口执行")+isCopyText+`：`)
+		_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到新终端窗口执行")+isCopyText+`：`)
 	}
-	fmt.Printf(params.HGreen, installCmd)
+	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, installCmd)
 	_, _ = fmt.Scanln()
 	os.Exit(0)
 	return

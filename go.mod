@@ -16,6 +16,7 @@ require (
 	github.com/kingparks/goutil v1.0.0
 	github.com/logoove/sqlite v1.16.1
 	github.com/lqqyt2423/go-mitmproxy v1.8.5
+	github.com/mattn/go-colorable v0.1.13
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tidwall/gjson v1.17.1

@@ -3,6 +3,7 @@ package shortcut
 import (
 	"fmt"
 	"strings"
+	"syscall"
 
 	"github.com/eiannone/keyboard"
 	"github.com/kingparks/cursor-vip/tui/params"
@@ -24,9 +25,10 @@ func Do() {
 			return
 		}
 
-		// 检查是否按下 Ctrl+C
+		//// 检查是否按下 Ctrl+C
 		if key == keyboard.KeyCtrlC {
-			return
+			// 发送退出信号
+			params.Sigs <- syscall.SIGTERM
 		}
 
 		// 将按键添加到缓冲区
@@ -44,27 +46,31 @@ func Do() {
 
 		switch {
 		case strings.HasSuffix(combination, "sen"):
-			tool.SetConfig("en", params.Mode)
+			params.Lang = "en"
+			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			fmt.Printf(params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "szh"):
-			tool.SetConfig("zh", params.Mode)
+			params.Lang = "zh"
+			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			fmt.Printf(params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "sm1"):
-			tool.SetConfig(params.Lang, 1)
+			params.Mode = 1
+			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			fmt.Printf(params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "sm2"):
-			tool.SetConfig(params.Lang, 2)
+			params.Mode = 2
+			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			fmt.Printf(params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
 			keyBuffer = nil
 
 		}

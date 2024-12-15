@@ -56,7 +56,7 @@ else
 fi
 
 if [ ! -z $1 ]; then
-  echo $1 >~/.cursor-viprc
+   echo "{\"promotion\":\"$1\"}" >~/.cursor-viprc
 fi
 
 # 如果是mac或者linux系统
@@ -91,7 +91,7 @@ if [[ $os_name == "windows" ]]; then
     echo "安装完成！自动运行; 下次可直接输入 ./cursor-vip.exe 并回车来运行程序"
     echo "运行后如果360等杀毒软件误报木马，添加信任后，重新输入./cursor-vip.exe 并回车来运行程序"
   else
-    echo "Installation completed! Automatically run; you can run the program by entering ./cursor-vip.exe and pressing Enter next time"
+    echo "Installation completed! Automatically run; you can run the program by entering ./cursor-vip.exe and press Enter next time"
     echo "After running, if 360 antivirus software reports a Trojan horse, add trust, and then re-enter ./cursor-vip.exe and press Enter to run the program"
   fi
 
