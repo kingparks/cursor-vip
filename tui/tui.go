@@ -76,7 +76,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
 	_, _ = fmt.Fprintf(params.ColorOut, "\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
-		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广10人或推广付费2人可获得一年授权)"))
+		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广付费2人可自动获得一年授权)"))
 	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+"install.sh) "+params.DeviceID+"\n")
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("专属推广链接")+"："+params.Host+"?p="+params.DeviceID)
 	fmt.Println()

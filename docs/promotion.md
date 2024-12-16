@@ -2,6 +2,8 @@
 
 > 🌐️ English | [中文](promotion_CN.md)
 
+> Due to the large number of non-real users received in the background, the promotion method of increasing one year for every 10 people has been removed, and only the promotion method of automatically increasing one year for every 2 people who pay has been retained.
+
 By promoting cursor-vip, you can automatically get up to an unlimited amount of free usage time, and the other party can also get 15 days of free (self-registration for 7 days), you can refer to the following methods:
 1. After cloning this repository, replace `githubReadme` in the `README` with your DeviceID.
 2. Post articles on platforms such as SegmentFault/Stack Overflow/GitHub Discussions/Reddit/Dev.to/Hacker News/DZone/V2EX/Quora/WeChat Official Account/Zhihu/Bilibili/CSDN/, promoting the use of cursor pro in this way, and attach your own promotional installation command or cloned github address.
