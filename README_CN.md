@@ -49,6 +49,11 @@ cursor-vip
 
 ---
 
+### 如何使用自定义模型
+[Gemini 2.0](docs/models-gemini-2.0_CN.md)
+
+---
+
 ### 提问与回答
 [提问与回答](docs/Q&A_CN.md)
 

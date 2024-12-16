@@ -50,6 +50,11 @@ cursor-vip
 
 ---
 
+### How to use custom models
+[Gemini 2.0](docs/models-gemini-2.0_CN.md)
+
+---
+
 ### Q & A
 [Q & A](docs/Q&A.md)
 
