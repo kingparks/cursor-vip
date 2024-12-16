@@ -45,7 +45,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	switch params.Lang {
 	case "zh":
 		params.Trr = &params.Tr{Locale: i18n.Locale{Lang: "zh"}}
-		params.GithubPath = "https://ghp.ci/" + params.GithubPath
+		params.GithubPath = strings.ReplaceAll(params.GithubPath, "https://github.com", "https://gitee.com")
 	case "nl":
 		params.Trr = &params.Tr{Locale: i18n.Locale{Lang: "nl"}}
 	case "ru":
