@@ -16,7 +16,7 @@ func main() {
 
 func startServer(productSelected string, modelIndexSelected int) {
 	params.Sigs = make(chan os.Signal, 1)
-	signal.Notify(params.Sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGKILL)
+	signal.Notify(params.Sigs, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGKILL)
 	go func() {
 		<-params.Sigs
 		auth.UnSetClient(productSelected)
