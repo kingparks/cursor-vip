@@ -63,14 +63,14 @@ func Do() {
 			params.Mode = 1
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启 cursor-vip 后生效"))
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "sm2"):
 			params.Mode = 2
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启 cursor-vip 后生效"))
 			keyBuffer = nil
 
 		}
