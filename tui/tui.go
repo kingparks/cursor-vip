@@ -45,6 +45,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	case "zh":
 		params.Trr = &params.Tr{Locale: i18n.Locale{Lang: "zh"}}
 		params.GithubPath = strings.ReplaceAll(params.GithubPath, "https://github.com", "https://gitee.com")
+		params.GithubInstall = "ic.sh"
 	case "nl":
 		params.Trr = &params.Tr{Locale: i18n.Locale{Lang: "nl"}}
 	case "ru":
@@ -75,7 +76,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
 	_, _ = fmt.Fprintf(params.ColorOut, "\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
 		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广付费2人可自动获得一年授权)"))
-	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+"install.sh) "+params.DeviceID+"\n")
+	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+params.GithubInstall+") "+params.DeviceID+"\n")
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("专属推广链接")+"："+params.Host+"?p="+params.DeviceID)
 	fmt.Println()
 
@@ -184,7 +185,7 @@ func checkUpdate(version int) {
 		return
 	}
 	isCopyText := ""
-	installCmd := `bash -c "$(curl -fsSLk ` + params.GithubPath + `install.sh)"`
+	installCmd := `bash -c "$(curl -fsSLk ` + params.GithubPath + params.GithubInstall + `)"`
 	errClip := clipboard.WriteAll(installCmd)
 	if errClip == nil {
 		isCopyText = params.Trr.Tr("（已复制到剪贴板）")
