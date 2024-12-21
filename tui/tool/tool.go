@@ -260,8 +260,8 @@ func EnsureSingleInstance(name string) (*flock.Flock, string, error) {
 		}
 
 		// 尝试终止旧进程
-		if err := syscall.Kill(pid, syscall.SIGTERM); err != nil {
-			return nil, pidFilePath, fmt.Errorf("无法终止进程 PID=%d: %w", pid, err)
+		if err := terminateProcess(pid); err != nil {
+			return nil, pidFilePath, err
 		}
 
 		// 等待旧实例退出
@@ -284,4 +284,17 @@ func EnsureSingleInstance(name string) (*flock.Flock, string, error) {
 		return nil, pidFilePath, fmt.Errorf("无法写入 PID 文件: %w", err)
 	}
 	return lock, pidFilePath, nil
+}
+
+// terminateProcess 在 Windows 上终止指定 PID 的进程
+func terminateProcess(pid int) error {
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return fmt.Errorf("无法找到进程 PID=%d: %w", pid, err)
+	}
+	// 调用 Kill 方法终止进程
+	if err := process.Kill(); err != nil {
+		return fmt.Errorf("无法终止进程 PID=%d: %w", pid, err)
+	}
+	return nil
 }
