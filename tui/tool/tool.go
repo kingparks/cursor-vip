@@ -4,14 +4,17 @@ import (
 	"crypto/md5"
 	"fmt"
 	"github.com/denisbrodbeck/machineid"
+	"github.com/gofrs/flock"
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/tidwall/gjson"
 	"howett.net/plist"
 	"net"
 	"os"
 	"os/exec"
+	"path"
 	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -227,4 +230,58 @@ func CountDown(seconds int) {
 		// 发送退出信号
 		params.Sigs <- syscall.SIGTERM
 	}(seconds)
+}
+
+// EnsureSingleInstance 确保程序的单实例运行
+func EnsureSingleInstance(name string) (*flock.Flock, string, error) {
+	homeDir, _ := os.UserHomeDir()
+	_ = os.MkdirAll(path.Join(homeDir, "."+name), 0755)
+	lockFilePath := path.Join(homeDir, "."+name, name+".lock")
+	pidFilePath := path.Join(homeDir, "."+name, name+".pid")
+	// 创建文件锁
+	lock := flock.New(lockFilePath)
+
+	// 尝试获取锁
+	locked, err := lock.TryLock()
+	if err != nil {
+		return nil, pidFilePath, fmt.Errorf("无法创建锁文件: %w", err)
+	}
+
+	if !locked {
+		// 读取 PID 文件
+		pidData, err := os.ReadFile(pidFilePath)
+		if err != nil {
+			return nil, pidFilePath, fmt.Errorf("无法读取 PID 文件: %w", err)
+		}
+
+		pid, err := strconv.Atoi(string(pidData))
+		if err != nil {
+			return nil, pidFilePath, fmt.Errorf("PID 文件格式错误: %w", err)
+		}
+
+		// 尝试终止旧进程
+		if err := syscall.Kill(pid, syscall.SIGTERM); err != nil {
+			return nil, pidFilePath, fmt.Errorf("无法终止进程 PID=%d: %w", pid, err)
+		}
+
+		// 等待旧实例退出
+		time.Sleep(1 * time.Second)
+
+		// 再次尝试获取锁
+		locked, err = lock.TryLock()
+		if err != nil {
+			return nil, pidFilePath, fmt.Errorf("无法重新获取锁文件: %w", err)
+		}
+		if !locked {
+			return nil, pidFilePath, fmt.Errorf("旧实例仍在运行，无法获取锁")
+		}
+	}
+
+	// 记录当前进程的 PID
+	pid := os.Getpid()
+	err = os.WriteFile(pidFilePath, []byte(strconv.Itoa(pid)), 0644)
+	if err != nil {
+		return nil, pidFilePath, fmt.Errorf("无法写入 PID 文件: %w", err)
+	}
+	return lock, pidFilePath, nil
 }

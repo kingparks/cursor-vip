@@ -6,7 +6,6 @@ import (
 	"github.com/atotto/clipboard"
 	"github.com/kingparks/cursor-vip/tui/client"
 	"github.com/kingparks/cursor-vip/tui/params"
-	"github.com/kingparks/cursor-vip/tui/shortcut"
 	"github.com/kingparks/cursor-vip/tui/tool"
 	"github.com/mattn/go-colorable"
 
@@ -70,7 +69,6 @@ func Run() (productSelected string, modelIndexSelected int) {
 		}
 	}
 	client.Cli.SetProxy(params.Lang)
-	checkUpdate(params.Version)
 	sCount, sPayCount, _, _, exp := client.Cli.GetMyInfo(params.DeviceID)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
@@ -83,6 +81,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 
 	printAD()
 	fmt.Println()
+	checkUpdate(params.Version)
 
 	// 快捷键
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：simultaneously press keyboard 's' 'e' 'n'"))
@@ -93,7 +92,6 @@ func Run() (productSelected string, modelIndexSelected int) {
 	case 2:
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为普通模式：同时按键盘 's' 'm' '1'"))
 	}
-	go shortcut.Do()
 	fmt.Println()
 
 	if len(params.Product) > 1 {
