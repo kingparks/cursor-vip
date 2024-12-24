@@ -13,8 +13,7 @@
 ⚠️ We plan to cooperate with the cursor official in the future to provide support for projects that can promote the progress of world civilization.
 
 ### Usage
-
-Open the terminal on MacOS/Linux; Open Git Bash on Windows. Then execute the following command to install:
+Open the terminal on MacOS/Linux; Open Git Bash on Windows(If you don't have GitBash, please choose method 3 to download manually, wsl is not supported). Then execute the following command to install:
 >some computers may report false positives, need to close the antivirus software/computer housekeeper/security protection and then proceed
 
 Method 1: Install via GitHub script
@@ -51,6 +50,14 @@ cursor-vip
 * Enjoy code prompts and chat functions.
 
 ---
+
+```md
+# Change configuration manually
+# Configuration file is located at ~/.cursor-viprc is a json file
+# Configuration items:
+# lang - language - String, optional values: en English; zh Chinese; nl Dutch; ru Russian; hu Hungarian; tr Turkish; es Spanish;
+# mode - mode - int, optional values: 1 normal mode; 2 proxy mode;
+```
 
 ### Promotion Guide
 [Promotion Guide](docs/promotion.md)

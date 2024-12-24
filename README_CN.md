@@ -15,7 +15,7 @@
 
 ### 使用方式
 
-在 MacOS/Linux 中，请打开终端；在 Windows 中，请打开 Git Bash。然后执行以下命令来安装：
+在 MacOS/Linux 中，请打开终端；在 Windows 中，请打开 Git Bash(如果没有GitBash,请选择方式3手动下载，不支持wsl)。然后执行以下命令来安装：
 > 部分电脑可能会误报毒，需要关闭杀毒软件/电脑管家/安全防护再进行
 
 方式1：通过 Gitee 脚本
@@ -51,6 +51,14 @@ cursor-vip
 * 打开 CURSOR 代码编辑器，点击右上角设置图标，可看到已是VIP账号。
 * 尽情享受代码提示和聊天功能。
 ---
+
+```md
+# 手动修改配置
+# 配置文件位于 ~/.cursor-viprc 是个json文件
+# 配置项：
+# lang - 语言 - String ，可选值：en英语 zh中文 nl荷兰语 ru俄语 hu匈牙利语 tr土耳其语 es西班牙语
+# mode - 模式 - int ，可选值：1普通模式 2代理模式
+```
 
 ### 推广指南
 [推广指南](docs/promotion_CN.md)
