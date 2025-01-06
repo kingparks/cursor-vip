@@ -16,7 +16,7 @@ sudo security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.k
 Graphical method
 > Execute open ~/.cursor-vip in the terminal, double-click the i-need-to-trust-ca-cert.pem file, pop up the "Keychain Access" window, select the certificate, search for cursor-vip, double-click cursor-vip, expand trust, select X.509 Basic Policy "Always trust", close the pop-up window, enter the password to confirm, and the certificate is installed.
 #### Windows:
-Command method
+Command method (gitBash)
 ```sh
 certutil -addstore root ~/.cursor-vip/ca-cert.cer
 ```

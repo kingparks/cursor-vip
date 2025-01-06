@@ -16,7 +16,7 @@ sudo security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.k
 图形化方式
 > 在终端执行 `open ~/.cursor-vip`，双击 i-need-to-trust-ca-cert.pem 文件，选择`登录`，弹出“钥匙串访问”窗口，选择证书，搜索 cursor-vip，双击 cursor-vip，展开信任，选择 X.509基本策略 “始终信任”，关闭弹窗，输入密码确认，证书安装完成。
 #### Windows: 
-命令行方式
+命令行方式（gitBash）
 ```sh
 certutil -addstore root ~/.cursor-vip/ca-cert.cer
 ```
