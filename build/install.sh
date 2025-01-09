@@ -1,5 +1,5 @@
 set -e
-URLS=("https://gitee.com/kingparks/cursor-vip/releases/download/latest/")
+URLS=("https://github.com/kingparks/cursor-vip/releases/download/latest/")
 url=${URLS[0]}
 lc_type=$(echo $LC_CTYPE | cut -c 1-2)
 if [ -z $lc_type ] || [ "$lc_type" = "UT" ]; then
@@ -97,5 +97,5 @@ if [[ $os_name == "windows" ]]; then
 
   echo ""
   chmod +x ${USERPROFILE}/Desktop/cursor-vip.exe
-  ${USERPROFILE}/Desktop/cursor-vip.exe
+  powershell -Command "Start-Process -FilePath '${USERPROFILE}/Desktop/cursor-vip.exe' -Verb RunAs"
 fi

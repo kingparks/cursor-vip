@@ -97,5 +97,5 @@ if [[ $os_name == "windows" ]]; then
 
   echo ""
   chmod +x ${USERPROFILE}/Desktop/cursor-vip.exe
-  ${USERPROFILE}/Desktop/cursor-vip.exe
+  powershell -Command "Start-Process -FilePath '${USERPROFILE}/Desktop/cursor-vip.exe' -Verb RunAs"
 fi

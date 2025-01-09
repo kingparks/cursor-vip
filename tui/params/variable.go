@@ -6,13 +6,14 @@ import (
 	"os"
 )
 
-var Mode int64 // 1普通模式 2代理模式
+var Mode int64 // 1模式1 2模式2
 var Lang string
 var Promotion string
 var DeviceID string
 var MachineID string
 var ColorOut io.Writer
 var Sigs chan os.Signal
+var SigCountDown chan int
 var Trr *Tr
 
 type Tr struct {

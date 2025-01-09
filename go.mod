@@ -21,6 +21,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tidwall/gjson v1.17.1
+	github.com/tidwall/sjson v1.2.5
 	github.com/unknwon/i18n v0.0.0-20210904045753-ff3a8617e361
 	golang.org/x/sys v0.22.0
 	gorm.io/driver/mysql v1.5.7

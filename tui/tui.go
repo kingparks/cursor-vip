@@ -8,6 +8,7 @@ import (
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/kingparks/cursor-vip/tui/tool"
 	"github.com/mattn/go-colorable"
+	"syscall"
 
 	"os"
 	"runtime"
@@ -66,6 +67,8 @@ func Run() (productSelected string, modelIndexSelected int) {
 		if strings.Contains(string(content), "/docker/") {
 			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("不支持容器环境"))
 			_, _ = fmt.Scanln()
+			// 发送退出信号
+			params.Sigs <- syscall.SIGTERM
 			panic(params.Trr.Tr("不支持容器环境"))
 		}
 	}
@@ -89,9 +92,9 @@ func Run() (productSelected string, modelIndexSelected int) {
 	modelIndexSelected = int(params.Mode)
 	switch params.Mode {
 	case 1:
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为代理模式：同时按键盘 's' 'm' '2'"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为模式2：依次按键盘 's' 'm' '2'"))
 	case 2:
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为普通模式：同时按键盘 's' 'm' '1'"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为模式1：依次按键盘 's' 'm' '1'"))
 	}
 	fmt.Println()
 
@@ -166,8 +169,12 @@ func Run() (productSelected string, modelIndexSelected int) {
 		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
 	}
-	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
-	tool.CountDown(int(expTime.Sub(time.Now()).Seconds()))
+	go func(t int) {
+		params.SigCountDown = make(chan int, 1)
+		<-params.SigCountDown
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+		tool.CountDown(t)
+	}(int(expTime.Sub(time.Now()).Seconds()))
 	return
 }
 
