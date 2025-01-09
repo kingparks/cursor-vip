@@ -45,7 +45,7 @@ cursor-vip
 
 [Additional settings for proxy mode](docs/proxyMode.md)
 
-**Enjoy cursor-vip:
+Enjoy cursor-vip:
 * Open the CURSOR code editor, click the settings icon in the upper right corner, and you can see that you are already a VIP account.
 * Enjoy code prompts and chat functions.
 
