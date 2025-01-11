@@ -120,7 +120,7 @@ func GetConfig() (lang, promotion string, mode int64) {
 		lang, _ = GetLocale()
 	}
 	if mode == 0 {
-		mode = 2
+		mode = 1
 	}
 	return
 }

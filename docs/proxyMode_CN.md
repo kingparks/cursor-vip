@@ -20,6 +20,10 @@ sudo security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.k
 ```sh
 certutil -addstore root ~/.cursor-vip/ca-cert.cer
 ```
+命令行方式（cmd）
+```sh
+certutil -addstore root %USERPROFILE%\.cursor-vip\ca-cert.cer
+```
 图形化方式
 > 在windows搜索输入 `管理用户证书`,选择`管理用户证书`功能，展开`受信任的根证书颁发机构`，选中`证书`，右键`所有任务`，选择`导入`，下一步，输入`%homepath%\.cursor-vip\ca-cert.cer`文件 (如果用选择方式的话，.pem会被隐藏，右下角选择*可以看到)，一直下一步，完成;。
 #### Linux

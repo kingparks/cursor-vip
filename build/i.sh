@@ -85,8 +85,16 @@ fi;
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
   taskkill -f -im cursor-vip.exe || true
+
+  # 检查 Desktop 目录是否存在
+  if [ -d "${USERPROFILE}/Desktop" ]; then
+    desktop_dir="${USERPROFILE}/Desktop"
+  else
+    desktop_dir="${USERPROFILE}/OneDrive/Desktop"
+  fi
+
   # 安装
-  curl -Lko ${USERPROFILE}/Desktop/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
+  curl -Lko ${desktop_dir}/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行; 下次可直接输入 ./cursor-vip.exe 并回车来运行程序"
     echo "运行后如果360等杀毒软件误报木马，添加信任后，重新输入./cursor-vip.exe 并回车来运行程序"
@@ -96,6 +104,6 @@ if [[ $os_name == "windows" ]]; then
   fi
 
   echo ""
-  chmod +x ${USERPROFILE}/Desktop/cursor-vip.exe
-  powershell -Command "Start-Process -FilePath '${USERPROFILE}/Desktop/cursor-vip.exe' -Verb RunAs"
+  chmod +x ${desktop_dir}/cursor-vip.exe
+  powershell -Command "Start-Process -FilePath '${desktop_dir}/cursor-vip.exe' -Verb RunAs"
 fi

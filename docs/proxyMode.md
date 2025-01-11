@@ -20,6 +20,10 @@ Command method (gitBash)
 ```sh
 certutil -addstore root ~/.cursor-vip/ca-cert.cer
 ```
+Command method（cmd）
+```sh
+certutil -addstore root %USERPROFILE%\.cursor-vip\ca-cert.cer
+```
 Graphical method
 > Search for cer in windows, select the certmgr.msc function, expand Trusted Root Certification Authorities, select Certificates, right-click All Tasks, select Import..., next, enter the %homepath%\.cursor-vip\ca-cert.cer file, next all the way, complete;
 #### Linux

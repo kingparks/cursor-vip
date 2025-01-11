@@ -73,13 +73,13 @@ func Run() (productSelected string, modelIndexSelected int) {
 		}
 	}
 	client.Cli.SetProxy(params.Lang)
-	sCount, sPayCount, _, _, exp := client.Cli.GetMyInfo(params.DeviceID)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
+	sCount, sPayCount, _, _, exp := client.Cli.GetMyInfo(params.DeviceID)
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
 	_, _ = fmt.Fprintf(params.ColorOut, "\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
 		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广付费2人可自动获得一年授权)"))
-	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+params.GithubInstall+") "+params.DeviceID+"\n")
+	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+params.GithubDownLoadPath+params.GithubInstall+") "+params.DeviceID+"\n")
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("专属推广链接")+"："+params.Host+"?p="+params.DeviceID)
 	fmt.Println()
 
@@ -88,7 +88,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	checkUpdate(params.Version)
 
 	// 快捷键
-	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：simultaneously press keyboard 's' 'e' 'n'"))
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：Press 's' 'e' 'n' on keyboard in turn"))
 	modelIndexSelected = int(params.Mode)
 	switch params.Mode {
 	case 1:
@@ -192,7 +192,7 @@ func checkUpdate(version int) {
 		return
 	}
 	isCopyText := ""
-	installCmd := `bash -c "$(curl -fsSLk ` + params.GithubPath + params.GithubInstall + `)"`
+	installCmd := `bash -c "$(curl -fsSLk ` + params.GithubPath + params.GithubDownLoadPath + params.GithubInstall + `)"`
 	errClip := clipboard.WriteAll(installCmd)
 	if errClip == nil {
 		isCopyText = params.Trr.Tr("（已复制到剪贴板）")
