@@ -84,7 +84,7 @@ fi;
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
-  taskkill -f -im cursor-vip.exe || true
+  taskkill -f -im cursor-vip.exe > nul 2>&1 || true
   desktop_dir=$(powershell -Command "[Environment]::GetFolderPath('Desktop')")
   # 安装
   curl -Lko ${desktop_dir}/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
