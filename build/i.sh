@@ -85,6 +85,18 @@ fi;
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
   taskkill -f -im cursor-vip.exe > nul 2>&1 || true
+  # 判断如果有powershell，则通过powershell来获取桌面路径,否则通过cmd来获取桌面路径
+  desktop_dir="${USERPROFILE}/Desktop"
+  if command -v powershell > /dev/null; then
+    desktop_dir=$(powershell -Command "[Environment]::GetFolderPath('Desktop')")
+  else
+      if [ -d "${USERPROFILE}/Desktop" ]; then
+        desktop_dir="${USERPROFILE}/Desktop"
+      else
+        desktop_dir="${USERPROFILE}/OneDrive/Desktop"
+      fi
+  fi
+
   desktop_dir=$(powershell -Command "[Environment]::GetFolderPath('Desktop')")
   # 安装
   curl -Lko ${desktop_dir}/cursor-vip.exe ${url}/cursor-vip_${os_name}_${hw_name}.exe
