@@ -8,6 +8,8 @@ import (
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/kingparks/cursor-vip/tui/tool"
 	"github.com/mattn/go-colorable"
+	"math"
+	"os/signal"
 	"syscall"
 
 	"os"
@@ -74,15 +76,21 @@ func Run() (productSelected string, modelIndexSelected int) {
 	}
 	client.Cli.SetProxy(params.Lang)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
-	sCount, sPayCount, _, _, exp := client.Cli.GetMyInfo(params.DeviceID)
+	sCount, sPayCount, _, _, exp, exclusiveAt, token, msg := client.Cli.GetMyInfo(params.DeviceID)
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("当前模式")+": "+fmt.Sprint(params.Mode))
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
 	_, _ = fmt.Fprintf(params.ColorOut, "\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
-		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广付费2人可自动获得一年授权)"))
+		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广年付费2人可自动获得一年授权)"))
 	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, "bash <(curl -Lk "+params.GithubPath+params.GithubDownLoadPath+params.GithubInstall+") "+params.DeviceID+"\n")
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("专属推广链接")+"："+params.Host+"?p="+params.DeviceID)
 	fmt.Println()
 
+	// 专属用户的消息
+	if msg != "" {
+		_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, msg)
+		fmt.Println()
+	}
 	printAD()
 	fmt.Println()
 	checkUpdate(params.Version)
@@ -90,13 +98,30 @@ func Run() (productSelected string, modelIndexSelected int) {
 	// 快捷键
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：Press 's' 'e' 'n' on keyboard in turn"))
 	modelIndexSelected = int(params.Mode)
-	switch params.Mode {
-	case 1:
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为模式2：依次按键盘 's' 'm' '2'"))
-	case 2:
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换为模式1：依次按键盘 's' 'm' '1'"))
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换模式依次按键盘")+": sm1/sm2/sm3/sm4")
+	// 独享账号
+	if params.Mode == 4 {
+		exclusiveAtTime, err := time.ParseInLocation("2006-01-02 15:04:05", exclusiveAt, time.Local)
+		if err != nil {
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("购买独享账号：依次按键盘 'b' 'u' 'y'"))
+			fmt.Println()
+		} else {
+			subDuration := time.Now().Sub(exclusiveAtTime)
+			// 30天内
+			if subDuration.Hours() < 30*24 {
+				if token != "" {
+					params.ExclusiveToken = token
+					_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("独享账号已使用天数")+fmt.Sprint(": ", math.Ceil(subDuration.Hours()/24))+"d")
+					fmt.Println()
+				} else {
+					_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("已购买独享账号,预计n小时内人工分配完成")+" n="+fmt.Sprint(int(24-subDuration.Hours())))
+				}
+			} else {
+				_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("购买独享账号：依次按键盘 'b' 'u' 'y'"))
+				fmt.Println()
+			}
+		}
 	}
-	fmt.Println()
 
 	if len(params.Product) > 1 {
 		_, _ = fmt.Fprintf(params.ColorOut, params.DefaultColor, params.Trr.Tr("选择要授权的产品："))
@@ -165,7 +190,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 			fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
 			goto checkPay
 		}
-		_, _, _, _, exp = client.Cli.GetMyInfo(params.DeviceID)
+		_, _, _, _, exp, _, _, _ = client.Cli.GetMyInfo(params.DeviceID)
 		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
 	}
@@ -204,6 +229,16 @@ func checkUpdate(version int) {
 		_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("有新版本，请关闭本窗口，将下面命令粘贴到新终端窗口执行")+isCopyText+`：`)
 	}
 	_, _ = fmt.Fprintf(params.ColorOut, params.HGreen, installCmd)
+	fmt.Println()
+
+	// 捕获 Ctrl+C 信号
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigChan
+		os.Exit(0)
+	}()
+
 	_, _ = fmt.Scanln()
 	os.Exit(0)
 	return

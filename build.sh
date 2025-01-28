@@ -20,7 +20,10 @@ GOOS=linux GOARCH=amd64 CGO_ENABLED=0 garble -literals -tiny build -ldflags "-w 
 GOOS=linux GOARCH=arm64 CGO_ENABLED=0 garble -literals -tiny build -ldflags "-w -s" -o build/cursor-vip_linux_arm64;
 GOOS=linux GOARCH=386 CGO_ENABLED=0 garble -literals -tiny build -ldflags "-w -s" -o build/cursor-vip_linux_386;
 
-chmod +x build/install.sh;
+chmod +x build/i.sh;
+chmod +x build/ic.sh;
+chmod +x build/ip.sh;
+chmod +x build/icp.sh;
 chmod +x build/cursor-vip_darwin_amd64;
 chmod +x build/cursor-vip_darwin_arm64;
 chmod +x build/cursor-vip_windows_amd64.exe;

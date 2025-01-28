@@ -8,6 +8,7 @@ import (
 
 var Mode int64 // 1模式1 2模式2
 var Lang string
+var ExclusiveToken string
 var Promotion string
 var DeviceID string
 var MachineID string

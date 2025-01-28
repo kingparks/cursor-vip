@@ -1,8 +1,11 @@
 package params
 
-var Version = 243
+var Version = 246
 
 var Hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
+
+//var Hosts = []string{"http://localhost:7193"}
+
 var Host = Hosts[0]
 var GithubPath = "https://github.com/kingparks/cursor-vip/"
 var GithubDownLoadPath = "releases/download/latest/"

@@ -10,6 +10,8 @@
 
 ⚠️ The stability of the proxy mode is better than the normal mode. If the resources are used up in the proxy mode, please open a new session.
 
+⚠️ The current stability ranking of the mode is: mode 3 > mode 2 > mode 4.
+
 ⚠️ We plan to cooperate with the cursor official in the future to provide support for projects that can promote the progress of world civilization.
 
 ### Usage

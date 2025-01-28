@@ -90,6 +90,17 @@ func (c *Client) GetPayUrl() (payUrl, orderID string) {
 	return
 }
 
+func (c *Client) GetExclusivePayUrl() (payUrl, orderID string) {
+	res, err := httplib.Get(c.host + "/exclusivePayUrl").String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	payUrl = gjson.Get(res, "payUrl").String()
+	orderID = gjson.Get(res, "orderID").String()
+	return
+}
+
 func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
 	res, err := httplib.Get(c.host+"/payCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
 	if err != nil {
@@ -100,7 +111,50 @@ func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
 	return
 }
 
-func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, exp string) {
+func (c *Client) ExclusivePayCheck(orderID, deviceID string) (isPay bool) {
+	res, err := httplib.Get(c.host+"/exclusivePayCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	isPay = gjson.Get(res, "isPay").Bool()
+	return
+}
+
+func (c *Client) DelFToken(deviceID string) (isPay bool) {
+	res, err := httplib.Get(c.host+"/delFToken").Header("sign", sign.Sign(deviceID)).String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	isPay = gjson.Get(res, "isPay").Bool()
+	return
+}
+
+func (c *Client) UpExclusiveStatus(exclusiveUsed, exclusiveTotal int64, exclusiveErr, exclusiveToken, deviceID string) {
+	body, _ := json.Marshal(map[string]interface{}{
+		"exclusiveUsed":  exclusiveUsed,
+		"exclusiveTotal": exclusiveTotal,
+		"exclusiveErr":   exclusiveErr,
+		"exclusiveToken": exclusiveToken,
+	})
+	_, _ = httplib.Post(c.host+"/upExclusiveStatus").
+		Header("sign", sign.Sign(deviceID)).
+		Body(body).
+		String()
+	return
+}
+
+func (c *Client) UpChecksumPrefix(p, deviceID string) {
+	body, _ := json.Marshal(map[string]interface{}{"p": p})
+	_, _ = httplib.Post(c.host+"/upChecksumPrefix").
+		Header("sign", sign.Sign(deviceID)).
+		Body(body).
+		String()
+	return
+}
+
+func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, exp, exclusiveAt, token, msg string) {
 	body, _ := json.Marshal(map[string]string{
 		"device":    deviceID,
 		"deviceMac": tool.GetMac_241018(),
@@ -126,6 +180,9 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	isPay = gjson.Get(res, "isPay").String()
 	ticket = gjson.Get(res, "ticket").String()
 	exp = gjson.Get(res, "exp").String()
+	exclusiveAt = gjson.Get(res, "exclusiveAt").String()
+	token = gjson.Get(res, "token").String()
+	msg = gjson.Get(res, "msg").String()
 	return
 }
 
@@ -139,7 +196,7 @@ func (c *Client) CheckVersion(version string) (upUrl string) {
 }
 
 func (c *Client) GetLic() (isOk bool, result string) {
-	req := httplib.Get(c.host+"/getLic").Header("sign", sign.Sign(params.DeviceID))
+	req := httplib.Get(c.host+"/getLic?mode="+fmt.Sprint(params.Mode)).Header("sign", sign.Sign(params.DeviceID))
 	res, err := req.String()
 	if err != nil {
 		isOk = false
