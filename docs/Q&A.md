@@ -27,3 +27,5 @@
 
 * After promotion, the increase in the number of people promoted is not displayed
 > The person being recommended needs to use the complete promotion command to install, and it only takes effect for the first installation of the device, and virtual machines such as VMware will not increase the number of people
+
+*Hey, I have paid the personal VIP. How can I got the account?
