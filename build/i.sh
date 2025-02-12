@@ -66,10 +66,10 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
   else
     echo "Please enter the boot password"
   fi;
-  # 停掉正在运行的cursor-vip
-  pkill cursor-vip || true
   # 安装
   sudo mkdir -p /usr/local/bin
+  # 停掉正在运行的cursor-vip
+  pkill cursor-vip > /dev/null || true
   sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
   if [ "$lc_type" = "zh" ]; then

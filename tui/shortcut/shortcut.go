@@ -58,50 +58,64 @@ func Do() {
 			params.Lang = "en"
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("Settings successful, will take effect after restart"))
 			keyBuffer = nil
+			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "szh"):
 			params.Lang = "zh"
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("Settings successful, will take effect after manual restart"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("Settings successful, will take effect after restart"))
 			keyBuffer = nil
+			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "sm1"):
 			params.Mode = 1
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启 cursor-vip 后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在重启 cursor-vip 后生效"))
 			keyBuffer = nil
+			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "sm2"):
 			params.Mode = 2
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启 cursor-vip 后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在重启 cursor-vip 后生效"))
 			keyBuffer = nil
+			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "sm3"):
 			params.Mode = 3
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启 cursor-vip 后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在重启 cursor-vip 后生效"))
 			keyBuffer = nil
+			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "sm4"):
 			params.Mode = 4
 			tool.SetConfig(params.Lang, params.Mode)
 			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在手动重启 cursor-vip 后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在重启 cursor-vip 后生效"))
 			keyBuffer = nil
+			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "buy"):
 			payUrl, orderID = client.Cli.GetExclusivePayUrl()
 			_ = clipboard.WriteAll(payUrl)
 			fmt.Println()
 			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
-			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c k p"))
+			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 ckp"))
+			keyBuffer = nil
+
+		case strings.HasSuffix(combination, "u3d"):
+			payUrl, orderID = client.Cli.GetM3PayUrl()
+			_ = clipboard.WriteAll(payUrl)
+			fmt.Println()
+			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3p"))
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "ckp"):
@@ -111,7 +125,23 @@ func Do() {
 				fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
 				continue
 			}
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在手动重启 cursor-vip 后生效"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+			keyBuffer = nil
+			tool.OpenNewTerminal()
+
+		case strings.HasSuffix(combination, "c3p"):
+			fmt.Println("checking...")
+			isPay := client.Cli.M3PayCheck(orderID, params.DeviceID)
+			if !isPay {
+				fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
+				continue
+			}
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+			keyBuffer = nil
+			tool.OpenNewTerminal()
+
+		case strings.HasSuffix(combination, "q3d"):
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, "\t"+params.M3DaysRemainingOnTrial+"d")
 			keyBuffer = nil
 		}
 	}

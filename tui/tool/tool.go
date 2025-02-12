@@ -66,7 +66,11 @@ func GetLocale() (langRes, locRes string) {
 			_, _ = fmt.Scanln()
 			panic(err)
 		}
-		langLocRaw := a["AppleLocale"].(string)
+		langLocRaw, ok := a["AppleLocale"].(string)
+		if !ok {
+			//fmt.Println("AppleLocale key not found or not a string")
+			return
+		}
 		langLoc := strings.Split(langLocRaw, "_")
 		langRes = langLoc[0]
 		langRes = strings.Split(langRes, "-")[0]
@@ -297,4 +301,29 @@ func terminateProcess(pid int) error {
 		return fmt.Errorf("无法终止进程 PID=%d: %w", pid, err)
 	}
 	return nil
+}
+
+func OpenNewTerminal() {
+	execPath, err := os.Executable()
+	if err != nil {
+		return
+	}
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("cmd", "/c", "start", "cmd", "/k", execPath)
+	case "darwin":
+		cmd = exec.Command("open", "-a", "Terminal", "-F", "-e", execPath)
+	case "linux":
+		cmd = exec.Command("x-terminal-emulator", "-e", "bash", "-c", execPath)
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+	err = cmd.Start()
+	if err != nil {
+		return
+	}
+	params.Sigs <- syscall.SIGTERM
 }

@@ -96,14 +96,19 @@ func Run() (productSelected string, modelIndexSelected int) {
 	checkUpdate(params.Version)
 
 	// 快捷键
-	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：Press 's' 'e' 'n' on keyboard in turn"))
+	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：Press 'sen' on keyboard in turn"))
 	modelIndexSelected = int(params.Mode)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换模式依次按键盘")+": sm1/sm2/sm3/sm4")
+	// 试用账号
+	if params.Mode == 3 {
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("查询账号自动刷新剩余天数：依次按键盘 q3d"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("小额付费刷新账号：依次按键盘 u3d"))
+	}
 	// 独享账号
 	if params.Mode == 4 {
 		exclusiveAtTime, err := time.ParseInLocation("2006-01-02 15:04:05", exclusiveAt, time.Local)
 		if err != nil {
-			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("购买独享账号：依次按键盘 'b' 'u' 'y'"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("购买独享账号：依次按键盘 buy"))
 			fmt.Println()
 		} else {
 			subDuration := time.Now().Sub(exclusiveAtTime)
@@ -117,11 +122,12 @@ func Run() (productSelected string, modelIndexSelected int) {
 					_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("已购买独享账号,预计n小时内人工分配完成")+" n="+fmt.Sprint(int(24-subDuration.Hours())))
 				}
 			} else {
-				_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("购买独享账号：依次按键盘 'b' 'u' 'y'"))
+				_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("购买独享账号：依次按键盘 buy"))
 				fmt.Println()
 			}
 		}
 	}
+	fmt.Println()
 
 	if len(params.Product) > 1 {
 		_, _ = fmt.Fprintf(params.ColorOut, params.DefaultColor, params.Trr.Tr("选择要授权的产品："))
@@ -236,10 +242,10 @@ func checkUpdate(version int) {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-sigChan
-		os.Exit(0)
+		params.Sigs <- syscall.SIGTERM
 	}()
 
 	_, _ = fmt.Scanln()
-	os.Exit(0)
+	params.Sigs <- syscall.SIGTERM
 	return
 }

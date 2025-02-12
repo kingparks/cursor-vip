@@ -51,8 +51,8 @@ func (c *Client) SetProxy(lang string) {
 		ConnectTimeout:   30 * time.Second,
 		Gzip:             true,
 		DumpBody:         true,
-		UserAgent: fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","machineID":"%s","sign":"%s"}`,
-			lang, runtime.GOOS, runtime.GOARCH, params.Version, params.DeviceID, params.MachineID, sign.Sign(params.DeviceID)),
+		UserAgent: fmt.Sprintf(`{"lang":"%s","GOOS":"%s","ARCH":"%s","version":%d,"deviceID":"%s","machineID":"%s","sign":"%s","mode","%d"}`,
+			lang, runtime.GOOS, runtime.GOARCH, params.Version, params.DeviceID, params.MachineID, sign.Sign(params.DeviceID), params.Mode),
 	})
 	if len(proxyText) > 0 {
 		_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, proxyText)
@@ -101,6 +101,17 @@ func (c *Client) GetExclusivePayUrl() (payUrl, orderID string) {
 	return
 }
 
+func (c *Client) GetM3PayUrl() (payUrl, orderID string) {
+	res, err := httplib.Get(c.host + "/m3PayUrl").String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	payUrl = gjson.Get(res, "payUrl").String()
+	orderID = gjson.Get(res, "orderID").String()
+	return
+}
+
 func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
 	res, err := httplib.Get(c.host+"/payCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
 	if err != nil {
@@ -121,8 +132,18 @@ func (c *Client) ExclusivePayCheck(orderID, deviceID string) (isPay bool) {
 	return
 }
 
+func (c *Client) M3PayCheck(orderID, deviceID string) (isPay bool) {
+	res, err := httplib.Get(c.host+"/m3PayCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	isPay = gjson.Get(res, "isPay").Bool()
+	return
+}
+
 func (c *Client) DelFToken(deviceID string) (isPay bool) {
-	res, err := httplib.Get(c.host+"/delFToken").Header("sign", sign.Sign(deviceID)).String()
+	res, err := httplib.Delete(c.host+"/delFToken").Header("sign", sign.Sign(deviceID)).String()
 	if err != nil {
 		fmt.Println(err)
 		return
