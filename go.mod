@@ -91,3 +91,9 @@ require (
 	modernc.org/strutil v1.2.0 // indirect
 	modernc.org/token v1.1.0 // indirect
 )
+
+replace (
+	github.com/lqqyt2423/go-mitmproxy => ./auth/go-mitmproxy
+	github.com/ugorji/go => github.com/ugorji/go v1.2.12
+	github.com/ugorji/go/codec => github.com/ugorji/go/codec v1.2.12
+)
