@@ -23,7 +23,7 @@ require (
 	github.com/tidwall/gjson v1.17.1
 	github.com/tidwall/sjson v1.2.5
 	github.com/unknwon/i18n v0.0.0-20210904045753-ff3a8617e361
-	golang.org/x/sys v0.22.0
+	golang.org/x/sys v0.30.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.11
 	howett.net/plist v1.0.1
@@ -93,6 +93,7 @@ require (
 )
 
 replace (
+	github.com/denisbrodbeck/machineid => ./auth/machineid
 	github.com/lqqyt2423/go-mitmproxy => ./auth/go-mitmproxy
 	github.com/ugorji/go => github.com/ugorji/go v1.2.12
 	github.com/ugorji/go/codec => github.com/ugorji/go/codec v1.2.12

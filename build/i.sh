@@ -84,7 +84,13 @@ fi;
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
-  taskkill -f -im cursor-vip.exe > nul 2>&1 || true
+  if [ -n "$MSYSTEM" ]; then
+    # Git Bash 环境
+    taskkill -f -im cursor-vip.exe > /dev/null 2>&1 || true
+  else
+    # CMD 或 PowerShell 环境
+    taskkill -f -im cursor-vip.exe > nul 2>&1 || true
+  fi
   # 判断如果有powershell，则通过powershell来获取桌面路径,否则通过cmd来获取桌面路径
   desktop_dir="${USERPROFILE}/Desktop"
   if command -v powershell > /dev/null; then

@@ -6,7 +6,8 @@ import (
 	"os"
 )
 
-var Mode int64 // 1模式1 2模式2
+var Mode int64           // 1模式1 2模式2
+var CursorVersion string // cursor版本号
 var Lang string
 var ExclusiveToken string
 var Promotion string

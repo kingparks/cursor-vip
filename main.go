@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gofrs/flock"
 	"github.com/kingparks/cursor-vip/auth"
 	"github.com/kingparks/cursor-vip/tui"
 	"github.com/kingparks/cursor-vip/tui/params"
@@ -11,13 +12,16 @@ import (
 	"syscall"
 )
 
+var lock *flock.Flock
+var pidFilePath string
+
 func main() {
+	lock, pidFilePath, _ = tool.EnsureSingleInstance("cursor-vip")
 	productSelected, modelIndexSelected := tui.Run()
 	startServer(productSelected, modelIndexSelected)
 }
 
 func startServer(productSelected string, modelIndexSelected int) {
-	lock, pidFilePath, _ := tool.EnsureSingleInstance("cursor-vip")
 	params.Sigs = make(chan os.Signal, 1)
 	signal.Notify(params.Sigs, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGKILL)
 	go func() {
