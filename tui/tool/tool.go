@@ -3,11 +3,6 @@ package tool
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/denisbrodbeck/machineid"
-	"github.com/gofrs/flock"
-	"github.com/kingparks/cursor-vip/tui/params"
-	"github.com/tidwall/gjson"
-	"howett.net/plist"
 	"net"
 	"os"
 	"os/exec"
@@ -18,6 +13,12 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/denisbrodbeck/machineid"
+	"github.com/gofrs/flock"
+	"github.com/kingparks/cursor-vip/tui/params"
+	"github.com/tidwall/gjson"
+	"howett.net/plist"
 )
 
 // 获取本地语言
@@ -314,7 +315,8 @@ func OpenNewTerminal() {
 	case "windows":
 		cmd = exec.Command("cmd", "/c", "start", "cmd", "/k", execPath)
 	case "darwin":
-		cmd = exec.Command("open", "-a", "Terminal", "-F", "-e", execPath)
+		// 直接使用 open 命令，不指定应用，系统会使用默认终端打开
+		cmd = exec.Command("open", "-n", "-F", execPath)
 	case "linux":
 		cmd = exec.Command("x-terminal-emulator", "-e", "bash", "-c", execPath)
 	}
