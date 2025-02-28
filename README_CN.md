@@ -29,7 +29,7 @@ bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest
 方式3：手动下载二进制文件
 > 从 [release](https://github.com/kingparks/cursor-vip/releases) 页下载对应操作系统的二进制文件
 ```shell
-# MaxOS/Linux
+# MaxOS/Linux (linux 二进制安装还需额外执行 i.sh 的内容)
 sudo mv cursor-vip_xx_xxx /usr/local/bin/cursor-vip;
 chmod +x /usr/local/bin/cursor-vip;
 cursor-vip githubReadme;

@@ -112,6 +112,28 @@ func (c *Client) GetM3PayUrl() (payUrl, orderID string) {
 	return
 }
 
+func (c *Client) GetM3tPayUrl() (payUrl, orderID string) {
+	res, err := httplib.Get(c.host + "/m3tPayUrl").String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	payUrl = gjson.Get(res, "payUrl").String()
+	orderID = gjson.Get(res, "orderID").String()
+	return
+}
+
+func (c *Client) GetM3hPayUrl() (payUrl, orderID string) {
+	res, err := httplib.Get(c.host + "/m3hPayUrl").String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	payUrl = gjson.Get(res, "payUrl").String()
+	orderID = gjson.Get(res, "orderID").String()
+	return
+}
+
 func (c *Client) PayCheck(orderID, deviceID string) (isPay bool) {
 	res, err := httplib.Get(c.host+"/payCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
 	if err != nil {
@@ -142,13 +164,32 @@ func (c *Client) M3PayCheck(orderID, deviceID string) (isPay bool) {
 	return
 }
 
-func (c *Client) DelFToken(deviceID string) (isPay bool) {
-	res, err := httplib.Delete(c.host+"/delFToken").Header("sign", sign.Sign(deviceID)).String()
+func (c *Client) M3tPayCheck(orderID, deviceID string) (isPay bool) {
+	res, err := httplib.Get(c.host+"/m3tPayCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	isPay = gjson.Get(res, "isPay").Bool()
+	return
+}
+
+func (c *Client) M3hPayCheck(orderID, deviceID string) (isPay bool) {
+	res, err := httplib.Get(c.host+"/m3hPayCheck?orderID="+orderID+"&deviceID="+deviceID).Header("sign", sign.Sign(deviceID)).String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	isPay = gjson.Get(res, "isPay").Bool()
+	return
+}
+
+func (c *Client) DelFToken(deviceID, category string) (err error) {
+	_, err = httplib.Delete(c.host+"/delFToken?category="+category).Header("sign", sign.Sign(deviceID)).String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	return
 }
 
@@ -175,7 +216,7 @@ func (c *Client) UpChecksumPrefix(p, deviceID string) {
 	return
 }
 
-func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, exp, exclusiveAt, token, msg string) {
+func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, exp, exclusiveAt, token, m3c, msg string) {
 	body, _ := json.Marshal(map[string]string{
 		"device":    deviceID,
 		"deviceMac": tool.GetMac_241018(),
@@ -209,6 +250,7 @@ func (c *Client) GetMyInfo(deviceID string) (sCount, sPayCount, isPay, ticket, e
 	exp = gjson.Get(res, "exp").String()
 	exclusiveAt = gjson.Get(res, "exclusiveAt").String()
 	token = gjson.Get(res, "token").String()
+	m3c = gjson.Get(res, "m3c").String()
 	msg = gjson.Get(res, "msg").String()
 	return
 }

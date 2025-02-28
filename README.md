@@ -29,7 +29,7 @@ bash <(curl -Lk https://gitee.com/kingparks/cursor-vip/releases/download/latest/
 Method 3: Manually download the binary file
 > download the binary file for the corresponding operating system from the [release](https://github.com/kingparks/cursor-vip/releases) page
  ```shell
-# MaxOS/Linux
+# MaxOS/Linux (linux binary installation also requires additional execution of the content of i.sh)
 sudo mv cursor-vip_xx_xxx /usr/local/bin/cursor-vip;
 chmod +x /usr/local/bin/cursor-vip;
 cursor-vip githubReadme;

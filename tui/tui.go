@@ -76,9 +76,13 @@ func Run() (productSelected string, modelIndexSelected int) {
 	}
 	client.Cli.SetProxy(params.Lang)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
-	sCount, sPayCount, _, _, exp, exclusiveAt, token, msg := client.Cli.GetMyInfo(params.DeviceID)
+	sCount, sPayCount, _, _, exp, exclusiveAt, token, m3c, msg := client.Cli.GetMyInfo(params.DeviceID)
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("当前模式")+": "+fmt.Sprint(params.Mode))
+	if params.Mode == 3 {
+		params.M3c = m3c
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("免付刷新次数")+": "+m3c)
+	}
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("付费到期时间")+":"+exp)
 	_, _ = fmt.Fprintf(params.ColorOut, "\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\033[32m%s\033[0m\u001B[1;32m %s \u001B[0m\u001B[32m%s\u001B[0m\n",
 		params.Trr.Tr("推广命令：(已推广"), sCount, params.Trr.Tr("人,推广已付费"), sPayCount, params.Trr.Tr("人；每推广年付费2人可自动获得一年授权)"))
@@ -103,6 +107,9 @@ func Run() (productSelected string, modelIndexSelected int) {
 	if params.Mode == 3 {
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("查询账号自动刷新剩余天数：依次按键盘 q3d"))
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("小额付费刷新账号：依次按键盘 u3d"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "10x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3t"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "100x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3h"))
+		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("订阅时长会在验证通过后增加对应的天数"))
 	}
 	// 独享账号
 	if params.Mode == 4 {
@@ -196,7 +203,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 			fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
 			goto checkPay
 		}
-		_, _, _, _, exp, _, _, _ = client.Cli.GetMyInfo(params.DeviceID)
+		_, _, _, _, exp, _, _, _, _ = client.Cli.GetMyInfo(params.DeviceID)
 		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
 	}

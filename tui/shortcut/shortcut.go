@@ -12,7 +12,10 @@ import (
 )
 
 var payUrl string
-var orderID string
+var orderIDExclusive string
+var orderIDU3d string
+var orderIDU3t string
+var orderIDU3h string
 
 func Do() {
 	if err := keyboard.Open(); err != nil {
@@ -103,7 +106,7 @@ func Do() {
 			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "buy"):
-			payUrl, orderID = client.Cli.GetExclusivePayUrl()
+			payUrl, orderIDExclusive = client.Cli.GetExclusivePayUrl()
 			_ = clipboard.WriteAll(payUrl)
 			fmt.Println()
 			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
@@ -111,16 +114,56 @@ func Do() {
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "u3d"):
-			payUrl, orderID = client.Cli.GetM3PayUrl()
+			if params.M3c > "0" {
+				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
+					return
+				}
+				_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+				tool.OpenNewTerminal()
+				return
+			}
+			payUrl, orderIDU3d = client.Cli.GetM3PayUrl()
 			_ = clipboard.WriteAll(payUrl)
 			fmt.Println()
 			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
 			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3p"))
 			keyBuffer = nil
 
+		case strings.HasSuffix(combination, "u3t"):
+			if params.M3c > "0" {
+				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
+					return
+				}
+				_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+				tool.OpenNewTerminal()
+				return
+			}
+			payUrl, orderIDU3t = client.Cli.GetM3tPayUrl()
+			_ = clipboard.WriteAll(payUrl)
+			fmt.Println()
+			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3t"))
+			keyBuffer = nil
+
+		case strings.HasSuffix(combination, "u3h"):
+			if params.M3c > "0" {
+				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
+					return
+				}
+				_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+				tool.OpenNewTerminal()
+				return
+			}
+			payUrl, orderIDU3h = client.Cli.GetM3hPayUrl()
+			_ = clipboard.WriteAll(payUrl)
+			fmt.Println()
+			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3h"))
+			keyBuffer = nil
+
 		case strings.HasSuffix(combination, "ckp"):
 			fmt.Println("checking...")
-			isPay := client.Cli.ExclusivePayCheck(orderID, params.DeviceID)
+			isPay := client.Cli.ExclusivePayCheck(orderIDExclusive, params.DeviceID)
 			if !isPay {
 				fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
 				continue
@@ -131,7 +174,29 @@ func Do() {
 
 		case strings.HasSuffix(combination, "c3p"):
 			fmt.Println("checking...")
-			isPay := client.Cli.M3PayCheck(orderID, params.DeviceID)
+			isPay := client.Cli.M3PayCheck(orderIDU3d, params.DeviceID)
+			if !isPay {
+				fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
+				continue
+			}
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+			keyBuffer = nil
+			tool.OpenNewTerminal()
+
+		case strings.HasSuffix(combination, "c3t"):
+			fmt.Println("checking...")
+			isPay := client.Cli.M3tPayCheck(orderIDU3t, params.DeviceID)
+			if !isPay {
+				fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
+				continue
+			}
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+			keyBuffer = nil
+			tool.OpenNewTerminal()
+
+		case strings.HasSuffix(combination, "c3h"):
+			fmt.Println("checking...")
+			isPay := client.Cli.M3hPayCheck(orderIDU3h, params.DeviceID)
 			if !isPay {
 				fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
 				continue

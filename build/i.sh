@@ -67,11 +67,47 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
     echo "Please enter the boot password"
   fi;
   # 安装
-  sudo mkdir -p /usr/local/bin
+  sudo mkdir -p /usr/local/bin;
+  sudo rm -f /usr/local/bin/cursor-vip;
   # 停掉正在运行的cursor-vip
   pkill cursor-vip > /dev/null || true
   sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
+
+  # linux 系统，接收用户输入 cursor.AppImage 文件路径，进行 --appimage-extract 操作生成 squashfs-root 目录；
+  # 进入 squashfs-root 目录，执行 sudo chown -R root:root usr/share/cursor/chrome-sandbox ,执行 sudo chmod 4755 usr/share/cursor/chrome-sandbox
+  # 回退到 squashfs-root 目录上一级，将 squashfs-root 移动到 ~/cursor
+  if [[ $os_name == "linux" ]]; then
+    if [ "$lc_type" = "zh" ]; then
+      echo "请输入 cursor-xxx.AppImage 文件路径"
+    else
+      echo "Please enter the cursor-xxx.AppImage file path"
+    fi;
+    read -p "cursor-xxx.AppImage file path: " appimage_path
+    if [ ! -f "$appimage_path" ]; then
+      if [ "$lc_type" = "zh" ]; then
+        echo "文件不存在"
+      else
+        echo "File does not exist"
+      fi;
+      exit 1
+    fi
+    appimage_path=$(realpath $appimage_path)
+    appimage_name=$(basename $appimage_path)
+    appimage_dir=$(dirname $appimage_path)
+    cd $appimage_dir;
+    chmod +x $appimage_name;
+    killall -9 cursor;
+    sudo rm -rf ./squashfs-root;
+    ./$appimage_name --appimage-extract;
+    cd squashfs-root;
+    sudo chown -R root:root usr/share/cursor/chrome-sandbox;
+    sudo chmod 4755 usr/share/cursor/chrome-sandbox;
+    cd ..;
+    rm -rf ~/cursor;
+    mv squashfs-root ~/cursor;
+  fi
+
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行；下次可直接输入 cursor-vip 并回车来运行程序"
   else
