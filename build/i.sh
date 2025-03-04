@@ -97,15 +97,21 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
     appimage_dir=$(dirname $appimage_path)
     cd $appimage_dir;
     chmod +x $appimage_name;
-    killall -9 cursor;
+    killall -9 cursor > /dev/null 2>&1 || true;
     sudo rm -rf ./squashfs-root;
     ./$appimage_name --appimage-extract;
     cd squashfs-root;
-    sudo chown -R root:root usr/share/cursor/chrome-sandbox;
-    sudo chmod 4755 usr/share/cursor/chrome-sandbox;
+    sudo chown -R root:root usr/share/cursor/chrome-sandbox > /dev/null 2>&1 || true;
+    sudo chmod 4755 usr/share/cursor/chrome-sandbox > /dev/null 2>&1 || true;
     cd ..;
     rm -rf ~/cursor;
     mv squashfs-root ~/cursor;
+    if [ "$lc_type" = "zh" ]; then
+      echo "跳过登录后关闭 cursor"
+    else
+      echo "Skip logging in then close the cursor"
+    fi;
+    ~/cursor/AppRun;
   fi
 
   if [ "$lc_type" = "zh" ]; then
