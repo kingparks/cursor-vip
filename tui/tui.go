@@ -199,7 +199,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	checkPay:
 		_, _ = fmt.Scanln()
 		isPay := client.Cli.PayCheck(orderID, params.DeviceID)
-		if !isPay {
+		if isPay {
 			fmt.Println(params.Trr.Tr("未捐赠,请捐赠完成后回车"))
 			goto checkPay
 		}
