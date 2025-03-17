@@ -1,6 +1,6 @@
 package params
 
-var Version = 252
+var Version = 253
 
 var Hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 
