@@ -19,3 +19,4 @@ var DefaultColor = "%s"
 var M3DaysRemainingOnTrial = "..."
 
 var Product = []string{"cursor IDE"}
+var IsOnlyMod2 = true

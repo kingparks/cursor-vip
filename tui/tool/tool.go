@@ -126,11 +126,16 @@ func GetConfig() (lang, promotion string, mode int64) {
 	}
 	if mode == 0 {
 		mode = 2
-		_, version := authtool.UpMainJs(true)
-		params.CursorVersion = version
-		if version > "0.46" {
-			mode = 3
+		if !params.IsOnlyMod2 {
+			_, version := authtool.UpMainJs(true)
+			params.CursorVersion = version
+			if version > "0.46" {
+				mode = 3
+			}
 		}
+	}
+	if params.IsOnlyMod2 {
+		mode = 2
 	}
 	return
 }

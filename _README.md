@@ -1,0 +1,1 @@
+## Today is a day off, cursor mcp is mvp.
