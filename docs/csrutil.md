@@ -1,4 +1,4 @@
-### Solve 'Too many free trials'
+### Solve 'Operation not permitted' error
 
 > 🌐️ English | [中文](csrutil_CN.md)
 

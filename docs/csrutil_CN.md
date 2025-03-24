@@ -1,4 +1,4 @@
-### Too many free trials 解决方案
+### Mac 权限问题 解决方案
 
 > 🌐️ 中文 | [English](freeTrialsSolve.md)
 
