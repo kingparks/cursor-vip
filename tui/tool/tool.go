@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/denisbrodbeck/machineid"
 	"github.com/gofrs/flock"
-	"github.com/kingparks/cursor-vip/authtool"
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/tidwall/gjson"
 	"howett.net/plist"
@@ -126,13 +125,6 @@ func GetConfig() (lang, promotion string, mode int64) {
 	}
 	if mode == 0 {
 		mode = 2
-		if !params.IsOnlyMod2 {
-			_, version := authtool.UpMainJs(true)
-			params.CursorVersion = version
-			if version > "0.46" {
-				mode = 3
-			}
-		}
 	}
 	if params.IsOnlyMod2 {
 		mode = 2

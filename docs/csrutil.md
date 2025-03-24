@@ -1,8 +1,8 @@
 ### Solve 'Too many free trials'
 
-> 🌐️ English | [中文](freeTrialsSolve_CN.md)
+> 🌐️ English | [中文](csrutil_CN.md)
 
-> When you use too many free accounts on a device, you will be prompted with Too many free trials. Mac users can temporarily disable SIP, then run cursor-vip to solve this problem, and you can enable SIP after solving it
+> Mac users can temporarily disable SIP, then run cursor-vip to solve this problem, and you can enable SIP after solving it
 
 
 #### MacOS Apple Silicon
