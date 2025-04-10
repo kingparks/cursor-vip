@@ -1,6 +1,6 @@
 package params
 
-var Version = 253
+var Version = 257
 
 var Hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
 
@@ -14,9 +14,11 @@ var Green = "\033[32m%s\033[0m\n"
 var Yellow = "\033[33m%s\033[0m\n"
 var HGreen = "\033[1;32m%s\033[0m"
 var DGreen = "\033[4;32m%s\033[0m\n"
-var Red = "\033[31m%s\033[0m\n"
+
+// var Red = "\033[31m%s\033[0m\n"
+var Red = "\033[1;31m%s\033[0m\n"
 var DefaultColor = "%s"
 var M3DaysRemainingOnTrial = "..."
 
 var Product = []string{"cursor IDE"}
-var IsOnlyMod2 = true
+var IsOnlyMod2 = false

@@ -38,3 +38,11 @@ func UnSetProxy() {
 		log.Fatal(err)
 	}
 }
+
+// CheckIfChownRequired 检查是否需要执行 chown 操作
+func CheckIfChownRequired(filePath string) bool {
+	return false
+}
+func MacOSIsSIPDisable() bool {
+	return true
+}

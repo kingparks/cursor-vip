@@ -114,6 +114,10 @@ func Do() {
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "u3d"):
+			if !client.Cli.CheckFToken(params.DeviceID) {
+				_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, params.Trr.Tr("抱歉，模式三暂无新账号，请稍后再试"))
+				return
+			}
 			if params.M3c > "0" {
 				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
 					return
@@ -130,6 +134,10 @@ func Do() {
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "u3t"):
+			if !client.Cli.CheckFToken(params.DeviceID) {
+				_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, params.Trr.Tr("抱歉，模式三暂无新账号，请稍后再试"))
+				return
+			}
 			if params.M3c > "0" {
 				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
 					return
@@ -146,6 +154,10 @@ func Do() {
 			keyBuffer = nil
 
 		case strings.HasSuffix(combination, "u3h"):
+			if !client.Cli.CheckFToken(params.DeviceID) {
+				_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, params.Trr.Tr("抱歉，模式三暂无新账号，请稍后再试"))
+				return
+			}
 			if params.M3c > "0" {
 				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
 					return

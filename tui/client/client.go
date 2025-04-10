@@ -193,6 +193,16 @@ func (c *Client) DelFToken(deviceID, category string) (err error) {
 	return
 }
 
+func (c *Client) CheckFToken(deviceID string) (has bool) {
+	res, err := httplib.Get(c.host+"/checkFToken").Header("sign", sign.Sign(deviceID)).String()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	has = gjson.Get(res, "has").Bool()
+	return
+}
+
 func (c *Client) UpExclusiveStatus(exclusiveUsed, exclusiveTotal int64, exclusiveErr, exclusiveToken, deviceID string) {
 	body, _ := json.Marshal(map[string]interface{}{
 		"exclusiveUsed":  exclusiveUsed,

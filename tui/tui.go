@@ -102,12 +102,12 @@ func Run() (productSelected string, modelIndexSelected int) {
 	// 快捷键
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("Switch to English：Press 'sen' on keyboard in turn"))
 	modelIndexSelected = int(params.Mode)
-	if !params.IsOnlyMod2 {
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换模式依次按键盘")+": sm1/sm2/sm3/sm4")
-	}
+	//if !params.IsOnlyMod2 {
+	//	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换模式依次按键盘")+": sm1/sm2/sm3/sm4")
+	//}
 	// 试用账号
 	if params.Mode == 3 {
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("查询账号自动刷新剩余天数：依次按键盘 q3d"))
+		//_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("查询账号自动刷新剩余天数：依次按键盘 q3d"))
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("小额付费刷新账号：依次按键盘 u3d"))
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "10x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3t"))
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "100x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3h"))
