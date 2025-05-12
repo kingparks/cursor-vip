@@ -1,5 +1,5 @@
 set -e
-URLS=("https://github.com/kingparks/cursor-vip/releases/download/latest/")
+URLS=("https://gitee.com/kingparks/cursor-vip/releases/download/latest/")
 url=${URLS[0]}
 lc_type=$(echo $LC_CTYPE | cut -c 1-2)
 if [ -z $lc_type ] || [ "$lc_type" = "UT" ]; then
@@ -66,12 +66,54 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
   else
     echo "Please enter the boot password"
   fi;
-  # 停掉正在运行的cursor-vip
-  pkill cursor-vip || true
   # 安装
-  sudo mkdir -p /usr/local/bin
+  sudo mkdir -p /usr/local/bin;
+  sudo rm -f /usr/local/bin/cursor-vip;
+  # 停掉正在运行的cursor-vip
+  pkill cursor-vip > /dev/null || true
   sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
+
+  # linux 系统，接收用户输入 cursor.AppImage 文件路径，进行 --appimage-extract 操作生成 squashfs-root 目录；
+  # 进入 squashfs-root 目录，执行 sudo chown -R root:root usr/share/cursor/chrome-sandbox ,执行 sudo chmod 4755 usr/share/cursor/chrome-sandbox
+  # 回退到 squashfs-root 目录上一级，将 squashfs-root 移动到 ~/cursor
+  if [[ $os_name == "linux" ]]; then
+    if [ "$lc_type" = "zh" ]; then
+      echo "请输入 cursor-xxx.AppImage 文件路径"
+    else
+      echo "Please enter the cursor-xxx.AppImage file path"
+    fi;
+    read -p "cursor-xxx.AppImage file path: " appimage_path
+    if [ ! -f "$appimage_path" ]; then
+      if [ "$lc_type" = "zh" ]; then
+        echo "文件不存在"
+      else
+        echo "File does not exist"
+      fi;
+      exit 1
+    fi
+    appimage_path=$(realpath $appimage_path)
+    appimage_name=$(basename $appimage_path)
+    appimage_dir=$(dirname $appimage_path)
+    cd $appimage_dir;
+    chmod +x $appimage_name;
+    killall -9 cursor > /dev/null 2>&1 || true;
+    sudo rm -rf ./squashfs-root;
+    ./$appimage_name --appimage-extract;
+    cd squashfs-root;
+    sudo chown -R root:root usr/share/cursor/chrome-sandbox > /dev/null 2>&1 || true;
+    sudo chmod 4755 usr/share/cursor/chrome-sandbox > /dev/null 2>&1 || true;
+    cd ..;
+    rm -rf ~/cursor;
+    mv squashfs-root ~/cursor;
+    if [ "$lc_type" = "zh" ]; then
+      echo "跳过登录后关闭 cursor"
+    else
+      echo "Skip logging in then close the cursor"
+    fi;
+    ~/cursor/AppRun;
+  fi
+
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行；下次可直接输入 cursor-vip 并回车来运行程序"
   else
@@ -84,10 +126,16 @@ fi;
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
-  taskkill -f -im cursor-vip.exe > nul 2>&1 || true
+  if [ -n "$MSYSTEM" ]; then
+    # Git Bash 环境
+    taskkill -f -im cursor-vip.exe > /dev/null 2>&1 || true
+  else
+    # CMD 或 PowerShell 环境
+    taskkill -f -im cursor-vip.exe > nul 2>&1 || true
+  fi
   desktop_dir="${USERPROFILE}/Desktop"
   if command -v powershell > /dev/null; then
-    desktop_dir=$(powershell -Command "[Environment]::GetFolderPath('Desktop')")
+    desktop_dir=$(powershell -Command "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; [Environment]::GetFolderPath('Desktop')")
   else
       if [ -d "${USERPROFILE}/Desktop" ]; then
         desktop_dir="${USERPROFILE}/Desktop"
