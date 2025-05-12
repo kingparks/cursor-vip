@@ -10,7 +10,7 @@
 
 ⚠️ 我们后期计划与 cursor 官方合作，为能够促进世界文明进步的项目提供支持。
 
-⚠️ 仅支持0.46以下版本的 chat 和 composer normal, 高级模型会排队
+⚠️ 目前仅支持0.45版本，支持 chat 和 composer normal 自动补全, 模型支持deepseek-v3
 
 
 ### 使用方式
