@@ -108,7 +108,9 @@ func Run() (productSelected string, modelIndexSelected int) {
 	// 试用账号
 	if params.Mode == 3 {
 		//_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("查询账号自动刷新剩余天数：依次按键盘 q3d"))
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("小额付费刷新账号：依次按键盘 u3d"))
+		if params.Lang == "zh" {
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("小额付费刷新账号：依次按键盘 u3d"))
+		}
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "10x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3t"))
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "100x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3h"))
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("订阅时长会在验证通过后增加对应的天数"))

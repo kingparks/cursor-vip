@@ -2,7 +2,7 @@ package params
 
 var Version = 257
 
-var Hosts = []string{"https://cursor.jeter.eu.org", "http://129.154.205.7:7193"}
+var Hosts = []string{"https://cursor.jeter.eu.org", "http://orcl.d.eiyou.fun:7193"}
 
 //var Hosts = []string{"http://localhost:7193"}
 
@@ -21,4 +21,4 @@ var DefaultColor = "%s"
 var M3DaysRemainingOnTrial = "..."
 
 var Product = []string{"cursor IDE"}
-var IsOnlyMod2 = false
+var IsOnlyMod2 = true
