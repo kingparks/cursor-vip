@@ -10,7 +10,7 @@
 
 ⚠️ We plan to cooperate with the cursor official in the future to provide support for projects that can promote the progress of world civilization.
 
-⚠️ The current version only supports 0.45, supports chat and composer normal auto-completion, and the model supports deepseek-v3
+⚠️ If you encounter problems, you can try small amount refresh (by shortcut key 'u3d' 'u3t' 'u3h').
 
 
 ### Usage

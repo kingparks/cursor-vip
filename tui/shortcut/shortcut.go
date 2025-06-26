@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"github.com/atotto/clipboard"
 	"github.com/eiannone/keyboard"
+	"github.com/kingparks/cursor-vip/authtool"
 	"github.com/kingparks/cursor-vip/tui/client"
 	"github.com/kingparks/cursor-vip/tui/params"
 	"github.com/kingparks/cursor-vip/tui/tool"
+	"os"
+	"runtime"
 	"strings"
 	"syscall"
 )
@@ -82,12 +85,17 @@ func Do() {
 			tool.OpenNewTerminal()
 
 		case strings.HasSuffix(combination, "sm2"):
-			params.Mode = 2
-			tool.SetConfig(params.Lang, params.Mode)
-			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在重启 cursor-vip 后生效"))
-			keyBuffer = nil
-			tool.OpenNewTerminal()
+			has := check45Version()
+			if has {
+				params.Mode = 2
+				tool.SetConfig(params.Lang, params.Mode)
+				fmt.Println()
+				_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("设置成功，将在重启 cursor-vip 后生效"))
+				keyBuffer = nil
+				tool.OpenNewTerminal()
+			} else {
+				keyBuffer = nil
+			}
 
 		case strings.HasSuffix(combination, "sm3"):
 			params.Mode = 3
@@ -222,4 +230,24 @@ func Do() {
 			keyBuffer = nil
 		}
 	}
+}
+
+func check45Version() bool {
+	if strings.HasPrefix(authtool.GetCursorVersion(), "0.45.") {
+		return true
+	}
+	switch runtime.GOOS {
+	case "darwin":
+		_, err := os.Stat("/Applications/Cursor.45.app/Contents/Resources/app/bin/code")
+		if os.IsNotExist(err) {
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, "0.45 cursor 下载地址："+"https://github.com/oslook/cursor-ai-downloads#:~:text=x64%0Alinux%2Darm64-,0.45.15,-2025%2D02%2D20")
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, "请先覆盖安装0.45的cursor,然后执行 mv /Applications/Cursor.app /Applications/Cursor.45.app;")
+			return false
+		} else {
+			return true
+		}
+	case "linux":
+		//todo 0.45版本
+	}
+	return false
 }
