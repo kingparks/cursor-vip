@@ -1,6 +1,6 @@
 package params
 
-var Version = 258
+var Version = 260
 
 var Hosts = []string{"http://orcl.d.eiyou.fun:7193", "https://cursor.jeter.eu.org"}
 

@@ -10,7 +10,7 @@
 
 ⚠️ We plan to cooperate with the cursor official in the future to provide support for projects that can promote the progress of world civilization.
 
-⚠️ If you encounter problems, you can try small amount refresh (by shortcut key 'u3d' 'u3t' 'u3h').
+⚠️ If you encounter problems, you can try small amount refresh (by shortcut key 'u3o' 'u3d' 'u3t' 'u3h').
 
 
 ### Usage

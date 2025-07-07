@@ -121,25 +121,17 @@ func Do() {
 			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 ckp"))
 			keyBuffer = nil
 
-		case strings.HasSuffix(combination, "u3d"):
-			if !client.Cli.CheckFToken(params.DeviceID) {
-				_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, params.Trr.Tr("抱歉，模式三暂无新账号，请稍后再试"))
+		case strings.HasSuffix(combination, "u3o"):
+			if err = client.Cli.DelFToken(params.DeviceID, "u3o"); err != nil {
 				return
 			}
-			if params.M3c > "0" {
-				if err = client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
-					return
-				}
-				_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
-				tool.OpenNewTerminal()
-				return
-			}
-			payUrl, orderIDU3d = client.Cli.GetM3PayUrl()
-			_ = clipboard.WriteAll(payUrl)
-			fmt.Println()
-			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
-			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3p"))
+			_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("切换成功，将在重启 cursor-vip 后生效"))
+			tool.OpenNewTerminal()
 			keyBuffer = nil
+			return
+
+		case strings.HasSuffix(combination, "u3d"):
+			KeyboardU3d(&keyBuffer)
 
 		case strings.HasSuffix(combination, "u3t"):
 			if !client.Cli.CheckFToken(params.DeviceID) {
@@ -250,4 +242,25 @@ func check45Version() bool {
 		//todo 0.45版本
 	}
 	return false
+}
+
+func KeyboardU3d(keyBuffer *[]rune) {
+	if !client.Cli.CheckFToken(params.DeviceID) {
+		_, _ = fmt.Fprintf(params.ColorOut, params.Yellow, params.Trr.Tr("抱歉，模式三暂无新账号，请稍后再试"))
+		return
+	}
+	if params.M3c > "0" {
+		if err := client.Cli.DelFToken(params.DeviceID, "u3"); err != nil {
+			return
+		}
+		_, _ = fmt.Fprintf(params.ColorOut, params.Red, params.Trr.Tr("购买成功，将在重启 cursor-vip 后生效"))
+		tool.OpenNewTerminal()
+		return
+	}
+	payUrl, orderIDU3d = client.Cli.GetM3PayUrl()
+	_ = clipboard.WriteAll(payUrl)
+	fmt.Println()
+	_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+	fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3p"))
+	keyBuffer = nil
 }

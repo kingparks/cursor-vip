@@ -109,6 +109,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	if params.Mode == 3 {
 		//_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("查询账号自动刷新剩余天数：依次按键盘 q3d"))
 		if params.Lang == "zh" {
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("切换老账号：依次按键盘 u3o"))
 			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("小额付费刷新账号：依次按键盘 u3d"))
 		}
 		_, _ = fmt.Fprintf(params.ColorOut, params.Green, "10x"+params.Trr.Tr("小额付费刷新账号：依次按键盘 u3t"))

@@ -1,4 +1,5 @@
 #!/bin/bash
+#gvm use go1.23.9;
 # garble混淆安装: go install mvdan.cc/garble@latest
 GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 garble -literals -tiny build -ldflags "-w -s" -o build/cursor-vip_darwin_amd64;
 GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 garble -literals -tiny build -ldflags "-w -s" -o build/cursor-vip_darwin_arm64;
