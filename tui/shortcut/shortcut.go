@@ -118,6 +118,7 @@ func Do() {
 			_ = clipboard.WriteAll(payUrl)
 			fmt.Println()
 			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+			fmt.Println(params.Trr.Tr("请点击上方链接进行捐赠"))
 			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 ckp"))
 			keyBuffer = nil
 
@@ -157,6 +158,7 @@ func Do() {
 			_ = clipboard.WriteAll(payUrl)
 			fmt.Println()
 			_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+			fmt.Println(params.Trr.Tr("请点击上方链接进行捐赠"))
 			fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3h"))
 			keyBuffer = nil
 
@@ -248,6 +250,7 @@ func KeyboardU3d(keyBuffer *[]rune) {
 	_ = clipboard.WriteAll(payUrl)
 	fmt.Println()
 	_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+	fmt.Println(params.Trr.Tr("请点击上方链接进行捐赠"))
 	fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3p"))
 	keyBuffer = nil
 }
@@ -269,6 +272,7 @@ func KeyboardU3t(keyBuffer *[]rune) {
 	_ = clipboard.WriteAll(payUrl)
 	fmt.Println()
 	_, _ = fmt.Fprintf(params.ColorOut, params.DGreen, payUrl)
+	fmt.Println(params.Trr.Tr("请点击上方链接进行捐赠"))
 	fmt.Println(params.Trr.Tr("捐赠完成后请依次按键 c3t"))
 	keyBuffer = nil
 }
