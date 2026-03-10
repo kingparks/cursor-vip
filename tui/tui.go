@@ -77,6 +77,7 @@ func Run() (productSelected string, modelIndexSelected int) {
 	client.Cli.SetProxy(params.Lang)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("设备码")+":"+params.DeviceID)
 	sCount, sPayCount, _, _, exp, exclusiveAt, token, m3c, msg := client.Cli.GetMyInfo(params.DeviceID)
+	params.M3Token = token
 	expTime, _ := time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 	_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("当前模式")+": "+fmt.Sprint(params.Mode))
 	if params.Mode == 3 {
@@ -212,12 +213,14 @@ func Run() (productSelected string, modelIndexSelected int) {
 		expTime, _ = time.ParseInLocation("2006-01-02 15:04:05", exp, time.Local)
 		fmt.Println()
 	}
-	go func(t int) {
-		params.SigCountDown = make(chan int, 1)
-		<-params.SigCountDown
-		_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
-		tool.CountDown(t)
-	}(int(expTime.Sub(time.Now()).Seconds()))
+	if token != "" {
+		go func(t int) {
+			params.SigCountDown = make(chan int, 1)
+			<-params.SigCountDown
+			_, _ = fmt.Fprintf(params.ColorOut, params.Green, params.Trr.Tr("授权成功！使用过程请不要关闭此窗口"))
+			tool.CountDown(t)
+		}(int(expTime.Sub(time.Now()).Seconds()))
+	}
 	return
 }
 

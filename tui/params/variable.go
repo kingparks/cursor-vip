@@ -11,6 +11,7 @@ var CursorVersion string // cursor版本号
 var Lang string
 var ExclusiveToken string
 var M3c string
+var M3Token string
 var Promotion string
 var DeviceID string
 var MachineID string

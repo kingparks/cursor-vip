@@ -124,11 +124,12 @@ func GetConfig() (lang, promotion string, mode int64) {
 		lang, _ = GetLocale()
 	}
 	if mode == 0 {
-		mode = 2
+		mode = 3
 	}
 	if params.IsOnlyMod2 {
 		mode = 2
 	}
+	mode = 3
 	return
 }
 

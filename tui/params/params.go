@@ -1,8 +1,8 @@
 package params
 
-var Version = 260
+var Version = 267
 
-var Hosts = []string{"http://orcl.d.eiyou.fun:7193", "https://cursor.jeter.eu.org"}
+var Hosts = []string{"https://cursor.jeter.eu.org", "http://130.162.150.122:7193"}
 
 //var Hosts = []string{"http://localhost:7193"}
 

@@ -33,4 +33,8 @@ func startServer(productSelected string, modelIndexSelected int) {
 	}()
 	go shortcut.Do()
 	auth.Run(productSelected, modelIndexSelected)
+	// 开始倒计时
+	//auth.CursorSet(params.M3Token, true)
+	//params.SigCountDown <- 1
+	//select {}
 }
